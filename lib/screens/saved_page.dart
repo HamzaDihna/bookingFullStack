@@ -60,10 +60,15 @@ class SavedPage extends StatelessWidget {
                       color:
                           isSelected ? Colors.white : Colors.black,
                     ),
+                    
                   );
+                  
                 }).toList(),
+               
               );
+              
             }),
+            
           ),
 
           /// 🔹 LISTVIEW (المهم)
@@ -78,18 +83,56 @@ class SavedPage extends StatelessWidget {
                 );
               }
 
-              return ListView.builder(
-                padding: const EdgeInsets.only(bottom: 20),
+             return ListView.separated(
+              
+                padding: const EdgeInsets.only(
+                  bottom: 20,
+                ),
                 itemCount: controller.filteredBookings.length,
-                itemBuilder: (context, index) {
-                  return BookedApartmentCard(
-                    booking:
-                        controller.filteredBookings[index],
-                  );
-                },
+                separatorBuilder: (context, index) => const Divider(
+                  height: 1,
+                  thickness: 3,
+                  color: Colors.lightBlue,
+                  indent: 30,
+                  endIndent: 30,
+                ),
+              itemBuilder: (context, index) {
+  final booking = controller.filteredBookings[index];
+
+  return AnimatedSwitcher(
+    duration: const Duration(milliseconds: 400),
+    transitionBuilder: (child, animation) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(animation),
+        child: FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      );
+    },
+    child: GestureDetector(
+      key: ValueKey(booking.id), 
+      onTap: () {
+        Get.toNamed(
+          '/bookingDetails',
+          arguments: booking,
+        );
+      },
+      child: BookedApartmentCard(
+  booking: booking,
+  enableNavigation: false,
+),
+
+    ),
+  );
+},
               );
             }),
           ),
+          
         ],
       ),
     );

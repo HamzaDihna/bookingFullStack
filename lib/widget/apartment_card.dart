@@ -5,20 +5,20 @@ import '../controller/home_controller.dart';
 
 class ApartmentCard extends StatelessWidget {
   final ApartmentModel apartment;
-
-  const ApartmentCard({super.key, required this.apartment});
+final bool enableNavigation;
+  const ApartmentCard({super.key, required this.apartment, this.enableNavigation = true});
 
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
 
     return GestureDetector(
-      onTap: () {
+      onTap: enableNavigation ? () {
         Get.toNamed(
           '/details',
           arguments: apartment,
         );
-      },
+      } : null,
       child: Hero(
         tag: apartment.id,
         child: Material(

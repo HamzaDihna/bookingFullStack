@@ -1,94 +1,118 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/booking_model.dart';
-import 'apartment_card.dart';
 
 class BookedApartmentCard extends StatelessWidget {
   final BookingModel booking;
+  final bool enableNavigation;
 
-  const BookedApartmentCard({super.key, required this.booking});
+  const BookedApartmentCard({
+    super.key,
+    required this.booking,
+    this.enableNavigation = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// ✅ نفس كارد الـ Home بالضبط
-        ApartmentCard(apartment: booking.apartment),
+    final apartment = booking.apartment;
 
-        /// ✅ معلومات الحجز
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 20),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade50,
-              borderRadius: BorderRadius.circular(12),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 6),
+        ],
+      ),
+      child: Row(
+        children: [
+          /// 🖼 Image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              apartment.image,
+              width: 90,
+              height: 90,
+              fit: BoxFit.cover,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+
+          const SizedBox(width: 12),
+
+          /// ℹ️ Info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _dateItem('From', booking.startDate),
-                _dateItem('To', booking.endDate),
+                Text(
+                  apartment.title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 4),
+
+                Text(
+                  apartment.location,
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 13,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                Text(
+                  '${booking.startDate.day}/${booking.startDate.month}'
+                  ' → '
+                  '${booking.endDate.day}/${booking.endDate.month}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
                 _statusChip(booking.status),
               ],
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _dateItem(String title, DateTime date) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title,
-            style: const TextStyle(
-                color: Colors.grey, fontSize: 12)),
-        const SizedBox(height: 4),
-        Text(
-          '${date.day}/${date.month}/${date.year}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _statusChip(BookingStatus status) {
     Color color;
-    String text;
 
     switch (status) {
       case BookingStatus.current:
-        color = Colors.green;
-        text = 'Current';
+        color = Colors.blue;
         break;
       case BookingStatus.previous:
         color = Colors.grey;
-        text = 'Previous';
         break;
       case BookingStatus.canceled:
         color = Colors.red;
-        text = 'Canceled';
         break;
-      case BookingStatus.all:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      default:
+        color = Colors.green;
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
+        status.name.capitalizeFirst!,
+        style: TextStyle(color: color, fontSize: 12),
       ),
     );
   }

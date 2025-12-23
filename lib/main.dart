@@ -7,11 +7,13 @@ import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:bookingresidentialapartments/main_view.dart';
 import 'package:bookingresidentialapartments/screens/Login_screen.dart';
 import 'package:bookingresidentialapartments/screens/apartment_details_page.dart';
+import 'package:bookingresidentialapartments/screens/booking_details_page.dart';
+import 'package:bookingresidentialapartments/screens/edit_booking_page.dart';
 import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:bookingresidentialapartments/screens/getStarted_screen.dart';
 import 'package:bookingresidentialapartments/screens/profile_page.dart';
 import 'package:bookingresidentialapartments/screens/search_page.dart';
-import 'package:bookingresidentialapartments/screens/select_data_page.dart';
+import 'package:bookingresidentialapartments/screens/select_date_page.dart';
 import 'package:bookingresidentialapartments/screens/signup_page.dart';
 import 'package:bookingresidentialapartments/screens/splash_screen.dart';
 import 'package:bookingresidentialapartments/screens/successful_booking_page.dart';
@@ -58,10 +60,10 @@ class bookingresidentialapartments extends StatelessWidget {
    
     GetPage(name: '/successfulSignup', page: () => const SuccessfulPageSignup()),
     GetPage(name: '/successfulBooking', page: () => const SuccessfulBookingPage()),
-   GetPage(
-  name: '/editProfile',
-  page: () =>  EditProfilePage(),),   
+   GetPage( name: '/editProfile',page: () =>  EditProfilePage(),),   
   GetPage(name: '/signup', page: () =>  SignUpPage()),
+  GetPage(name: '/bookingDetails',page: () => const BookingDetailsPage(),),
+//  GetPage(name: '/editBooking',page: () =>  EditBookingPage(),),
 
   ],
     ));

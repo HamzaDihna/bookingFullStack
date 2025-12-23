@@ -7,7 +7,7 @@ class BookingModel {
   final ApartmentModel apartment;
   final DateTime startDate;
   final DateTime endDate;
-  BookingStatus status;
+   BookingStatus status;
 
   BookingModel({
     required this.id,
