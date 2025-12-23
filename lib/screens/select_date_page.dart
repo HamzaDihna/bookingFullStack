@@ -1,5 +1,8 @@
+import 'package:bookingresidentialapartments/controller/booking_controller.dart';
+import 'package:bookingresidentialapartments/controller/edit_date_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/dialogs/confirm_booking_dialog.dart';
+import 'package:bookingresidentialapartments/models/booking_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -250,4 +253,63 @@ class SelectDatePage extends StatelessWidget {
       ],
     );
   }
+}
+void _showEditConfirmDialog(
+  BookingController bookingController,
+  BookingModel booking,
+  EditDateController controller,
+) {
+  Get.dialog(
+    AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: const Text(
+        'Confirm Edit',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Change booking dates to:'),
+          const SizedBox(height: 12),
+          Text(
+            'From: ${controller.newStart!.day}/'
+            '${controller.newStart!.month}/'
+            '${controller.newStart!.year}',
+          ),
+          Text(
+            'To: ${controller.newEnd!.day}/'
+            '${controller.newEnd!.month}/'
+            '${controller.newEnd!.year}',
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Get.back(),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            bookingController.editBookingDates(
+              booking.id,
+              controller.newStart!,
+              controller.newEnd!,
+            );
+            Get.back(); // dialog
+            Get.back(); // page
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+          ),
+          child: const Text(
+            'Yes, Save',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    ),
+  );
 }

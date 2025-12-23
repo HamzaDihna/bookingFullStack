@@ -89,13 +89,7 @@ class SavedPage extends StatelessWidget {
                   bottom: 20,
                 ),
                 itemCount: controller.filteredBookings.length,
-                separatorBuilder: (context, index) => const Divider(
-                  height: 1,
-                  thickness: 3,
-                  color: Colors.lightBlue,
-                  indent: 30,
-                  endIndent: 30,
-                ),
+                  separatorBuilder: (_, __) => const SizedBox(height: 0),
               itemBuilder: (context, index) {
   final booking = controller.filteredBookings[index];
 

@@ -158,25 +158,52 @@ class BookingDetailsPage extends StatelessWidget {
                       /// 🔥 Buttons Edit + Cancel
                       Row(
                         children: [
+                          if (booking.status == BookingStatus.current)
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
-                                // 👇 الخطوة القادمة
+                                Get.toNamed(
+          '/editBooking',
+          arguments: booking,
+        );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
                               ),
                               child: const Text('Edit',style: TextStyle(color: Colors.white),),
                             ),
-                          ),
+                          )
+                          else
+  Expanded(
+    child: ElevatedButton(
+      onPressed: null, // 🔒 disabled
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey,
+      ),
+      child: const Text('Edit'),
+    ),
+  ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () {
-                                bookingController.cancelBooking(
-                                    booking.id);
-                                Get.back();
-                              },
+                              onPressed: booking.status == BookingStatus.canceled
+    ? null
+    : () {
+        Get.defaultDialog(
+          title: 'Cancel Booking',
+          middleText:
+              'Are you sure you want to cancel this booking?',
+          textCancel: 'No',
+          textConfirm: 'Yes, Cancel',
+          confirmTextColor: Colors.white,
+          buttonColor: Colors.red,
+          onConfirm: () {
+            bookingController.cancelBooking(booking.id);
+            Get.back(); // close dialog
+            Get.back(); // back to SavedPage
+          },
+        );
+      },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red,
                               ),

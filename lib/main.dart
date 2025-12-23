@@ -63,7 +63,7 @@ class bookingresidentialapartments extends StatelessWidget {
    GetPage( name: '/editProfile',page: () =>  EditProfilePage(),),   
   GetPage(name: '/signup', page: () =>  SignUpPage()),
   GetPage(name: '/bookingDetails',page: () => const BookingDetailsPage(),),
-//  GetPage(name: '/editBooking',page: () =>  EditBookingPage(),),
+   GetPage(name: '/editBooking',page: () =>  EditBookingPage(),),
 
   ],
     ));

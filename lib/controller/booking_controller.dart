@@ -38,4 +38,36 @@ class BookingController extends GetxController {
         .where((b) => b.status == selectedStatus.value)
         .toList();
   }
+void editBookingDates(
+  String bookingId,
+  DateTime newStart,
+  DateTime newEnd,
+) {
+  final booking =
+      bookings.firstWhere((b) => b.id == bookingId);
+
+  booking.startDate = newStart;
+  booking.endDate = newEnd;
+
+  bookings.refresh();
 }
+
+List<DateTime> getBookedDates({String? excludeBookingId}) {
+  final dates = <DateTime>[];
+
+  for (final booking in bookings) {
+    if (booking.id == excludeBookingId) continue;
+    if (booking.status == BookingStatus.canceled) continue;
+
+    DateTime day = booking.startDate;
+    while (!day.isAfter(booking.endDate)) {
+      dates.add(day);
+      day = day.add(const Duration(days: 1));
+    }
+  }
+
+  return dates;
+}
+  
+}
+

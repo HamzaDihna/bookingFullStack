@@ -5,8 +5,8 @@ enum BookingStatus { all, current, previous, canceled }
 class BookingModel {
   final String id;
   final ApartmentModel apartment;
-  final DateTime startDate;
-  final DateTime endDate;
+   DateTime startDate;
+   DateTime endDate;
    BookingStatus status;
 
   BookingModel({
