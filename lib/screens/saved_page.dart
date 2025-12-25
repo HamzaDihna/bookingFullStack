@@ -5,11 +5,24 @@ import 'package:get/get.dart';
 import '../controller/booking_controller.dart';
 import '../models/booking_model.dart';
 
-class SavedPage extends StatelessWidget {
+class SavedPage extends StatefulWidget {
   const SavedPage({super.key});
 
   @override
+  State<SavedPage> createState() => _SavedPageState();
+  
+}
+
+class _SavedPageState extends State<SavedPage> {
+   @override
+  void initState() {
+    super.initState();
+    Get.find<BookingController>().updateBookingStatuses();
+  }
+
+  @override
   Widget build(BuildContext context) {
+  
     final BookingController controller =
         Get.find<BookingController>();
 
@@ -112,7 +125,7 @@ class SavedPage extends StatelessWidget {
       onTap: () {
         Get.toNamed(
           '/bookingDetails',
-          arguments: booking,
+          arguments: booking.id,
         );
       },
       child: BookedApartmentCard(

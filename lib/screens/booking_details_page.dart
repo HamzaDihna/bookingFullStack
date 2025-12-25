@@ -1,3 +1,4 @@
+import 'package:bookingresidentialapartments/widget/apartment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/booking_model.dart';
@@ -8,17 +9,18 @@ class BookingDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final booking = Get.arguments as BookingModel;
-    final apartment = booking.apartment;
+   final bookingId = Get.arguments as String;
     final bookingController = Get.find<BookingController>();
-
+return Obx((){
+  final booking = bookingController.bookings.firstWhere((b) => b.id == bookingId);
+  final apartment=booking.apartment;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-         title: const Text(
+        title: const Text(
           'Details',
           style: TextStyle(color: Colors.white),
         ),
@@ -53,7 +55,7 @@ class BookingDetailsPage extends StatelessWidget {
             initialChildSize: 0.55,
             minChildSize: 0.55,
             maxChildSize: 0.9,
-            builder: (_, controller) {
+            builder: (_, scrollController) {
               return Container(
                 padding: const EdgeInsets.all(20),
                 decoration: const BoxDecoration(
@@ -62,14 +64,13 @@ class BookingDetailsPage extends StatelessWidget {
                       BorderRadius.vertical(top: Radius.circular(30)),
                 ),
                 child: SingleChildScrollView(
-                  controller: controller,
+                  controller: scrollController,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// Title + Favorite
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             apartment.title,
@@ -78,8 +79,7 @@ class BookingDetailsPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const Icon(Icons.favorite,
-                              color: Colors.red),
+                          const Icon(Icons.favorite, color: Colors.red),
                         ],
                       ),
 
@@ -98,15 +98,60 @@ class BookingDetailsPage extends StatelessWidget {
                       const SizedBox(height: 16),
 
                       /// Price
-                      Text(
-                        '${apartment.price}\$',
-                        style: const TextStyle(
-                          fontSize: 26,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text('Per day'),
+                      /// 💰 Price + ⭐ Rating
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${apartment.price}\$',
+          style: const TextStyle(
+            fontSize: 26,
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Text('Per day'),
+      ],
+    ),
+
+    /// ⭐ Rating UI
+    if (booking.status == BookingStatus.previous)
+      booking.rating == null
+          ? InkWell(
+              onTap: () {
+                _showRatingDialog(
+                  booking,
+                  bookingController,
+                );
+              },
+              child: Row(
+                children: List.generate(
+                  5,
+                  (index) => const Icon(
+                    Icons.star_border,
+                    color: Colors.orange,
+                    size: 28,
+                  ),
+                ),
+              ),
+            )
+          : Row(
+              children: List.generate(
+                5,
+                (index) => Icon(
+                  index < booking.rating!.stars.round()
+                      ? Icons.star
+                      : Icons.star_border,
+                  color: Colors.orange,
+                  size: 26,
+                ),
+              ),
+            ),
+  ],
+),
 
                       const SizedBox(height: 20),
 
@@ -116,8 +161,7 @@ class BookingDetailsPage extends StatelessWidget {
                             const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade200,
-                          borderRadius:
-                              BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(18),
                         ),
                         child: Row(
                           children: [
@@ -137,6 +181,7 @@ class BookingDetailsPage extends StatelessWidget {
                               ),
                             ),
                           ],
+                          
                         ),
                       ),
 
@@ -155,64 +200,13 @@ class BookingDetailsPage extends StatelessWidget {
 
                       const SizedBox(height: 30),
 
-                      /// 🔥 Buttons Edit + Cancel
-                      Row(
-                        children: [
-                          if (booking.status == BookingStatus.current)
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Get.toNamed(
-          '/editBooking',
-          arguments: booking,
-        );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                              ),
-                              child: const Text('Edit',style: TextStyle(color: Colors.white),),
-                            ),
-                          )
-                          else
-  Expanded(
-    child: ElevatedButton(
-      onPressed: null, // 🔒 disabled
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.grey,
-      ),
-      child: const Text('Edit'),
-    ),
-  ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: booking.status == BookingStatus.canceled
-    ? null
-    : () {
-        Get.defaultDialog(
-          title: 'Cancel Booking',
-          middleText:
-              'Are you sure you want to cancel this booking?',
-          textCancel: 'No',
-          textConfirm: 'Yes, Cancel',
-          confirmTextColor: Colors.white,
-          buttonColor: Colors.red,
-          onConfirm: () {
-            bookingController.cancelBooking(booking.id);
-            Get.back(); // close dialog
-            Get.back(); // back to SavedPage
-          },
-        );
-      },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                              ),
-                              child: const Text('Cancel',style: TextStyle(color: Colors.white),),
-                            ),
-                          ),
-                        ],
+                      /// 🔥 Buttons Section
+                      _buildActionButtons(
+                        booking,
+                        bookingController,
                       ),
                     ],
+                    
                   ),
                 ),
               );
@@ -221,6 +215,114 @@ class BookingDetailsPage extends StatelessWidget {
         ],
       ),
     );
+  });
+  }
+
+
+  /// 🔘 Buttons logic
+  Widget _buildActionButtons(
+    BookingModel booking,
+    BookingController bookingController,
+  ) {
+    /// ✅ إذا ملغي
+    if (booking.status == BookingStatus.canceled) {
+      return SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+          child: const Text(
+            'Canceled',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
+    /// ⏳ غير ملغي
+    return Row(
+      children: [
+        /// ✏️ Edit
+        Expanded(
+          child: ElevatedButton(
+            onPressed: _canEditBooking(booking)
+                ? () {
+                    Get.toNamed(
+                      '/editBooking',
+                      arguments: booking,
+                    );
+                  }
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+            ),
+            child: const Text(
+              'Edit',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+
+        /// ❌ Cancel
+        Expanded(
+          child: ElevatedButton(
+            onPressed:_canEditBooking(booking)? () {
+              Get.defaultDialog(
+                title: 'Cancel Booking',
+                middleText:
+                    'Are you sure you want to cancel this booking?',
+                textCancel: 'No',
+                textConfirm: 'Yes, Cancel',
+                confirmTextColor: Colors.white,
+                buttonColor: Colors.red,
+                onConfirm: () {
+                  bookingController.cancelBooking(booking.id);
+                  Get.back();
+                  Get.back();
+                },
+              );
+            } :null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 🔒 منع التعديل إذا الحجز بلّش
+  bool _canEditBooking(BookingModel booking) {
+    final today = DateTime.now();
+    final startDateOnly = DateTime(
+      booking.startDate.year,
+      booking.startDate.month,
+      booking.startDate.day,
+    );
+
+    final todayOnly = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    );
+
+    return startDateOnly.isAfter(todayOnly) &&
+        booking.status == BookingStatus.current;
   }
 
   Widget _infoItem(String title, String value) {
@@ -228,10 +330,52 @@ class BookingDetailsPage extends StatelessWidget {
       children: [
         Text(title, style: const TextStyle(color: Colors.grey)),
         const SizedBox(height: 4),
-        Text(value,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
+}
+void _showRatingDialog(
+  BookingModel booking,
+  BookingController controller,
+) {
+  final rating = 1.0.obs;
+  final commentController = TextEditingController();
+
+  Get.defaultDialog(
+    title: 'Rate Apartment',
+    content: Column(
+      children: [
+        Obx(
+          () => Slider(
+            value: rating.value,
+            min: 1,
+            max: 5,
+            divisions: 4,
+            label: rating.value.toString(),
+            onChanged: (value) {
+              rating.value = value;
+            },
+          ),
+        ),
+      ],
+    ),
+    textConfirm: 'Submit',
+    confirmTextColor: Colors.white,
+    buttonColor: Colors.amber,
+    onConfirm: () {
+      controller.addRating(
+        booking.id,
+        rating.value,
+        commentController.text.isEmpty
+            ? null
+            : commentController.text,
+      );
+      Get.back();
+    },
+    textCancel: 'Cancel',
+  );
 }

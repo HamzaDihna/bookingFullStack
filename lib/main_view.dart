@@ -10,18 +10,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'controller/navigation_controller.dart';
+
 class MainView extends StatelessWidget {
   MainView({super.key});
 
   final NavigationController navController =
       Get.put(NavigationController());
-final UserController userController = Get.put(UserController());
+  final UserController userController = Get.put(UserController());
   final ThemeController themeController = Get.put(ThemeController());
   final AuthController authController = Get.put(AuthController());
 
   final pages = [
-    HomePage(),
-     FavoritePage(),
+     HomePage(),
+   FavoritePage(),
      ChatPage(),
      SavedPage(),
      ProfilePage(),
@@ -30,12 +31,33 @@ final UserController userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Obx(
-      // ignore: deprecated_member_use
       () => WillPopScope(
-        onWillPop:  () async => false,
+        onWillPop: () async => false,
         child: Scaffold(
-          body: pages[navController.currentIndex.value],
-        
+          body: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 350),
+            switchInCurve: Curves.easeOut,
+            switchOutCurve: Curves.easeIn,
+            transitionBuilder: (child, animation) {
+              final slideAnimation = Tween<Offset>(
+                begin: const Offset(0.1, 0),
+                end: Offset.zero,
+              ).animate(animation);
+
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: slideAnimation,
+                  child: child,
+                ),
+              );
+            },
+            child: SizedBox(
+              key: ValueKey(navController.currentIndex.value),
+              child: pages[navController.currentIndex.value],
+            ),
+          ),
+
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: navController.currentIndex.value,
             selectedItemColor: Colors.blue,
@@ -62,7 +84,8 @@ final UserController userController = Get.put(UserController());
 
     return BottomNavigationBarItem(
       label: '',
-      icon: Container(
+      icon: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
