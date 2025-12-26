@@ -120,11 +120,25 @@ body: Obx(() => Padding(
       const SizedBox(height: 20),
 
       ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: const Text('My Apartments'),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () {},
-      ),
+  contentPadding: EdgeInsets.zero,
+  title: Obx(() {
+    final nav = Get.find<NavigationController>();
+    return Text(
+      nav.isOwnerMode.value ? 'Home' : 'My Apartments',
+    );
+  }),
+  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+  onTap: () {
+    final nav = Get.find<NavigationController>();
+
+    if (nav.isOwnerMode.value) {
+      nav.switchToTenant(); // 👤
+    } else {
+      nav.switchToOwner(); // 🏠
+    }
+  },
+),
+
 
       ListTile(
         contentPadding: const EdgeInsets.only(left: 14),

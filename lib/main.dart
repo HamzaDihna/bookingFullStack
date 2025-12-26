@@ -6,11 +6,13 @@ import 'package:bookingresidentialapartments/controller/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:bookingresidentialapartments/main_view.dart';
 import 'package:bookingresidentialapartments/screens/Login_screen.dart';
+import 'package:bookingresidentialapartments/screens/add_apartment_page.dart';
 import 'package:bookingresidentialapartments/screens/apartment_details_page.dart';
 import 'package:bookingresidentialapartments/screens/booking_details_page.dart';
 import 'package:bookingresidentialapartments/screens/edit_booking_page.dart';
 import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:bookingresidentialapartments/screens/getStarted_screen.dart';
+import 'package:bookingresidentialapartments/screens/my_apartments_page.dart';
 import 'package:bookingresidentialapartments/screens/profile_page.dart';
 import 'package:bookingresidentialapartments/screens/search_page.dart';
 import 'package:bookingresidentialapartments/screens/select_date_page.dart';
@@ -64,7 +66,8 @@ class bookingresidentialapartments extends StatelessWidget {
   GetPage(name: '/signup', page: () =>  SignUpPage()),
   GetPage(name: '/bookingDetails',page: () => const BookingDetailsPage(),),
    GetPage(name: '/editBooking',page: () =>  EditBookingPage(),),
-
+  GetPage(name: '/myApartments', page: () =>  MyApartmentsPage()),
+  GetPage(name: '/addApartment', page: () =>  AddApartmentPage()),
   ],
     ));
   }
