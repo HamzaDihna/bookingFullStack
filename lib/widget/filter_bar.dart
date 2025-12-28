@@ -1,4 +1,4 @@
-import 'package:bookingresidentialapartments/controller/home_controller.dart';
+import 'package:bookingresidentialapartments/controller/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'filter_chip_widget.dart';

@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 
 class SuccessController extends GetxController {
-  final String message = 'Your account has been created.';
+ final String message;
+SuccessController({required this.message});
+
   
   void navigateToLogin() {
     Get.offAllNamed('/login');

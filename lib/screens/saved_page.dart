@@ -2,7 +2,7 @@ import 'package:bookingresidentialapartments/controller/navigation_controller.da
 import 'package:bookingresidentialapartments/widget/booked_apartment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/booking_controller.dart';
+import '../controller/booking/booking_controller.dart';
 import '../models/booking_model.dart';
 
 class SavedPage extends StatefulWidget {

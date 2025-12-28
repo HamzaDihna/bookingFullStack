@@ -48,7 +48,7 @@ class SuccessfulPageSignup extends StatelessWidget {
                 
                 // ✅ النص "Your account has been" (سطر أول)
                 const Text(
-                  'Your account has been',
+                  'Your account has been,awaiting admin approval.',
                   style: TextStyle(
                     fontSize: 20, // حجم أصغر قليلاً
                     fontWeight: FontWeight.w400, // وزن عادي
@@ -87,11 +87,11 @@ class SuccessfulPageSignup extends StatelessWidget {
                     onPressed: () {
                       Get.snackbar(
   'Success',
-  'Account created successfully',
+  'Account created successfully,awaiting admin approval.',
   snackPosition: SnackPosition.BOTTOM,
 );
 
-                      Get.offAllNamed('/homepage'); // أو أي صفحة تريد
+                      Get.offAllNamed('/login'); // أو أي صفحة تريد
                     },
                     child: const Text(
                       'OK',

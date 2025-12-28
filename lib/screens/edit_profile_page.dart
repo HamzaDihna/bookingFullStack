@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:bookingresidentialapartments/controller/edit_profile_controller.dart';
+import 'package:bookingresidentialapartments/controller/profile/edit_profile_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

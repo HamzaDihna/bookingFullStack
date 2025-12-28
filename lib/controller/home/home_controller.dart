@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import '../models/apartment_model.dart';
+import '../../models/apartment_model.dart';
 
 class HomeController extends GetxController {
   RxBool isFiltering = false.obs;

@@ -1,7 +1,7 @@
 import 'package:bookingresidentialapartments/widget/owner_apartment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/home_controller.dart';
+import '../controller/home/home_controller.dart';
 import '../widget/filter_bar.dart';
 
 class MyApartmentsPage extends StatelessWidget {

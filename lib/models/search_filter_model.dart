@@ -3,15 +3,18 @@ class SearchFilter {
   final String city;
   final int minPrice;
   final int maxPrice;
-  final String rooms;
-  final String wifi;
+  final int? rooms;
+  final bool? hasWifi;
 
   SearchFilter({
     required this.governorate,
     required this.city,
     required this.minPrice,
     required this.maxPrice,
-    required this.rooms,
-    required this.wifi,
+    this.rooms,
+    this.hasWifi,
   });
 }
+// SearchFilter filter = SearchFilter(...);
+// api.searchApartments(filter);
+// لا يوجد استخدام لهذا الملف حاليا

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bookingresidentialapartments/controller/signup_controller.dart';
+import 'package:bookingresidentialapartments/controller/profile/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -144,24 +144,24 @@ class SignUpPage extends StatelessWidget {
                   const SizedBox(height: 30),
 
                   // ---------- Sign Up Button ----------
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1689C5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                     
-                      onPressed: controller.signUp,
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 18,color: Colors.white),
-                      ),
-                    ),
-                  ),
+                  Obx(() => SizedBox(
+  width: double.infinity,
+  height: 50,
+  child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xFF1689C5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    ),
+    // إذا كان يحمل، نعطل الزر (null)، وإذا لا، نستدعي الدالة
+    onPressed: controller.isLoading.value ? null : () => controller.signUp(),
+    child: controller.isLoading.value
+        ? const CircularProgressIndicator(color: Colors.white)
+        : const Text(
+            'Sign Up',
+            style: TextStyle(fontSize: 18, color: Colors.white),
+          ),
+  ),
+)),
 
                   const SizedBox(height: 16),
                   Center(

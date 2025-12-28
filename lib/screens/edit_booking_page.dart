@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../models/booking_model.dart';
-import '../controller/booking_controller.dart';
-import '../controller/edit_date_controller.dart';
+import '../controller/booking/booking_controller.dart';
+import '../controller/booking/edit_date_controller.dart';
 
 class EditBookingPage extends StatelessWidget {
   const EditBookingPage({super.key});

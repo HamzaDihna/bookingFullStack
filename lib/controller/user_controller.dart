@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-
+import 'package:get_storage/get_storage.dart';
+ 
 class UserController extends GetxController {
   RxString firstName = ''.obs;
   RxString lastName = ''.obs;
@@ -50,17 +51,31 @@ class UserController extends GetxController {
   }
   void loginFromApi({
     required Map<String, dynamic> userData,
-    required String token,
+    String? token, // جعلته اختياري لأن الـ JSON الذي أرسلته لا يحتوي على توكن حالياً
   }) {
-    firstName.value = userData['firstName'] ?? '';
-    lastName.value = userData['lastName'] ?? '';
-    phone.value = userData['phone'] ?? '';
-    avatar.value = userData['avatar'] ?? '';
-    birthday.value = userData['birthday'] ?? '';
-    this.token.value = token;
-    isLoggedIn.value = true;
+    // 1. معالجة الاسم: الباك إند يرسل "name". سنأخذ أول جزء منه كـ FirstName والباقي كـ LastName
+    String fullNameFromServer = userData['name'] ?? '';
+    List<String> nameParts = fullNameFromServer.split(' ');
     
+    firstName.value = nameParts.isNotEmpty ? nameParts[0] : '';
+    lastName.value = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+
+    // 2. مطابقة بقية الحقول مع الـ JSON (Keys من Laravel)
+    phone.value = userData['phone']?.toString() ?? '';
+    avatar.value = userData['profile_image'] ?? ''; // كان عندك اسمه avatar
+    identityImage.value = userData['id_image'] ?? ''; 
+    birthday.value = userData['birth_date'] ?? ''; // كان عندك اسمه birthday
+    
+    // 3. حفظ التوكن إذا كان موجوداً
+    if (token != null) {
+      this.token.value = token;
+      isLoggedIn.value = true;
+    }
+
+    // 4. الحفظ في الذاكرة (GetStorage)
     saveUserToStorage();
+    
+    print("✅ تم تحديث بيانات المستخدم: ${fullName}");
   }
   void updateProfile({
   String? newFirstName,
@@ -97,31 +112,28 @@ class UserController extends GetxController {
   }
 String get fullName => '${firstName.value} ${lastName.value}'.trim();
 
- void saveUserToStorage() {
-    // dependencies:
-    //   get_storage: ^2.1.1
-    // import 'package:get_storage/get_storage.dart';
+ void saveUserToStorage() { 
     
-    // final storage = GetStorage();
-    // storage.write('user_firstName', firstName.value);
-    // storage.write('user_lastName', lastName.value);
-    // storage.write('user_phone', phone.value);
-    // storage.write('user_token', token.value);
-    // storage.write('user_isLoggedIn', isLoggedIn.value);
+    final storage = GetStorage();
+    storage.write('user_firstName', firstName.value);
+    storage.write('user_lastName', lastName.value);
+    storage.write('user_phone', phone.value);
+    storage.write('user_token', token.value);
+    storage.write('user_isLoggedIn', isLoggedIn.value);
   }
 
   void loadUserFromStorage() {
-    // final storage = GetStorage();
-    // firstName.value = storage.read('user_firstName') ?? '';
-    // lastName.value = storage.read('user_lastName') ?? '';
-    // phone.value = storage.read('user_phone') ?? '';
-    // token.value = storage.read('user_token') ?? '';
-    // isLoggedIn.value = storage.read('user_isLoggedIn') ?? false;
+    final storage = GetStorage();
+    firstName.value = storage.read('user_firstName') ?? '';
+    lastName.value = storage.read('user_lastName') ?? '';
+    phone.value = storage.read('user_phone') ?? '';
+    token.value = storage.read('user_token') ?? '';
+    isLoggedIn.value = storage.read('user_isLoggedIn') ?? false;
   }
 
   void clearStorage() {
-    // final storage = GetStorage();
-    // storage.erase();
+    final storage = GetStorage();
+    storage.erase();
   }
 
   Map<String, String> get authHeaders {
@@ -151,7 +163,16 @@ String get fullName => '${firstName.value} ${lastName.value}'.trim();
       'isProfileComplete': isProfileComplete,
     };
   }
-
+void checkLoginStatus() {
+  loadUserFromStorage(); // تحميل البيانات من GetStorage
+  
+  if (isLoggedIn.value && token.value.isNotEmpty) {
+    // هنا نقرر أين نذهب
+    Get.offAllNamed('/home'); // إذا مسجل دخول اذهب للهوم
+  } else {
+    Get.offAllNamed('/login'); // إذا لا، اذهب لتسجيل الدخول
+  }
+}
   void printUserInfo() {
     print('=== User Info ===');
     print('Name: $fullName');

@@ -3,12 +3,14 @@ class ApartmentModel {
   final String title;
   final String location;
   final double price;
-  final double rating;
+  final double rating; // average rating
   final String image;
-   bool isFavorite;
   final int rooms;
   final bool hasWifi;
-final String description;
+  final String description;
+
+  bool isFavorite;
+
   ApartmentModel({
     required this.id,
     required this.title,
@@ -16,23 +18,23 @@ final String description;
     required this.price,
     required this.rating,
     required this.image,
-    this.isFavorite = false,
-     this.rooms=0,
-       //لا تنسئ تعمل required عند الربط في الكونستركتور
+    required this.rooms,
     required this.hasWifi,
     required this.description,
+    this.isFavorite = false,
   });
-}
-// factory ApartmentModel.fromJson(Map<String, dynamic> json) {
-//   return ApartmentModel(
-//     id: json['id'],
-//     title: json['title'],
-//     location: json['location'],
-//     price: (json['price'] as num).toDouble(),
-//     rating: (json['rating'] as num).toDouble(),
-//     image: json['image'] ?? '',
-//     rooms: json['rooms'] ?? 0,
-//     hasWifi: json['hasWifi'] ?? false,
-//     isFavorite: json['isFavorite'] ?? false,
-//   );
-// }
+
+factory ApartmentModel.fromJson(Map<String, dynamic> json) {
+    return ApartmentModel(
+      id: json['id'].toString(), // تحويل لـ String دائماً للأمان
+      title: json['title'] ?? '',
+      location: json['location'] ?? '',
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
+      rating: double.tryParse(json['rating'].toString()) ?? 0.0,
+      image: json['profile_image'] ?? '', // تأكد من اسم الحقل من الباك
+      rooms: json['rooms'] ?? 0,
+      hasWifi: json['has_wifi'] == 1 || json['has_wifi'] == true, // Laravel يرجع boolean كـ 0 أو 1 غالباً
+      description: json['description'] ?? '',
+      isFavorite: json['is_favorite'] ?? false,
+    );
+  }}

@@ -1,8 +1,8 @@
 import 'package:bookingresidentialapartments/binding/app_binding.dart';
-import 'package:bookingresidentialapartments/controller/auth_controller.dart';
-import 'package:bookingresidentialapartments/controller/booking_controller.dart';
+import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
+import 'package:bookingresidentialapartments/controller/booking/booking_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
-import 'package:bookingresidentialapartments/controller/theme_controller.dart';
+import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:bookingresidentialapartments/main_view.dart';
 import 'package:bookingresidentialapartments/screens/Login_screen.dart';
@@ -13,6 +13,7 @@ import 'package:bookingresidentialapartments/screens/edit_booking_page.dart';
 import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:bookingresidentialapartments/screens/getStarted_screen.dart';
 import 'package:bookingresidentialapartments/screens/my_apartments_page.dart';
+import 'package:bookingresidentialapartments/screens/pending_approval_page.dart';
 import 'package:bookingresidentialapartments/screens/profile_page.dart';
 import 'package:bookingresidentialapartments/screens/search_page.dart';
 import 'package:bookingresidentialapartments/screens/select_date_page.dart';
@@ -22,9 +23,10 @@ import 'package:bookingresidentialapartments/screens/successful_booking_page.dar
 import 'package:bookingresidentialapartments/screens/successful_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-void main() {
-  
+import 'package:get_storage/get_storage.dart';
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   Get.put(ThemeController());
   Get.put(UserController());
   Get.put(AuthController());
@@ -59,7 +61,8 @@ class bookingresidentialapartments extends StatelessWidget {
    GetPage(name: '/signup', page: () => const SignUpPage()),
    GetPage(name: '/SearchPage', page: () =>  SearchPage()),
    GetPage(name: '/profile', page: () =>  ProfilePage()),
-   
+   GetPage( name: '/pendingApproval', page: () => const PendingApprovalPage(),),
+
     GetPage(name: '/successfulSignup', page: () => const SuccessfulPageSignup()),
     GetPage(name: '/successfulBooking', page: () => const SuccessfulBookingPage()),
    GetPage( name: '/editProfile',page: () =>  EditProfilePage(),),   

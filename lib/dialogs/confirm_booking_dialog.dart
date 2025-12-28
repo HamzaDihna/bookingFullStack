@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/select_date_controller.dart';
-import '../controller/booking_controller.dart';
+import '../controller/booking/select_date_controller.dart';
+import '../controller/booking/booking_controller.dart';
 import '../models/booking_model.dart';
 import '../models/apartment_model.dart';
 

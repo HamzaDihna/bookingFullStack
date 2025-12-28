@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'user_controller.dart';
+import '../user_controller.dart';
 
 class AuthController extends GetxController {
   void confirmLogout() {

@@ -1,5 +1,5 @@
-import 'package:bookingresidentialapartments/controller/booking_controller.dart';
-import 'package:bookingresidentialapartments/controller/edit_date_controller.dart';
+import 'package:bookingresidentialapartments/controller/booking/booking_controller.dart';
+import 'package:bookingresidentialapartments/controller/booking/edit_date_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/dialogs/confirm_booking_dialog.dart';
 import 'package:bookingresidentialapartments/models/booking_model.dart';
@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../models/apartment_model.dart';
-import '../controller/select_date_controller.dart';
+import '../controller/booking/select_date_controller.dart';
 
 class SelectDatePage extends StatelessWidget {
   SelectDatePage({super.key});

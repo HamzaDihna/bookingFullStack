@@ -1,6 +1,6 @@
 import 'package:bookingresidentialapartments/models/rating_model.dart';
 import 'package:get/get.dart';
-import '../models/booking_model.dart';
+import '../../models/booking_model.dart';
 
 class BookingController extends GetxController {
   final bookings = <BookingModel>[].obs;

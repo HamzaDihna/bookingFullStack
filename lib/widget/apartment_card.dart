@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/apartment_model.dart';
-import '../controller/home_controller.dart';
+import '../controller/home/home_controller.dart';
 
 class ApartmentCard extends StatelessWidget {
   final ApartmentModel apartment;

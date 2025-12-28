@@ -1,14 +1,16 @@
 import 'dart:io';
+import 'package:bookingresidentialapartments/services/api_service.dart.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'user_controller.dart';
+import '../user_controller.dart';
 
 class SignUpController extends GetxController {
   
 
   final picker = ImagePicker();
 RxBool isPickingImage = false.obs;
-
+final isLoading = false.obs;
   // ---------- بيانات ----------
   RxString firstName = ''.obs;
   RxString lastName = ''.obs;
@@ -44,47 +46,32 @@ RxBool showConfirmPassword = false.obs;
 }
 
   /// Sign Up (جاهز للباك)
- void signUp() {
-  if (firstName.value.trim().isEmpty ||
-      lastName.value.trim().isEmpty ||
-      phone.value.trim().isEmpty ||
-      password.value.trim().isEmpty || 
-      personalImage.value == null ||
-      identityImage.value == null || confirmPassword.value.trim().isEmpty) {
-        
-    Get.defaultDialog(
-      title: 'Error',
-      middleText: 'Please fill all fields',
-      textConfirm: 'OK',
-      onConfirm:  Get.back, // بس يسكر
-    );
-
-    return;
-  }
+ Future<void> signUp() async {
   if (password.value != confirmPassword.value) {
-    Get.defaultDialog(
-      title: 'Password Error',
-      middleText: 'Password does not match Confirm Password',
-      textConfirm: 'OK',
-      onConfirm:  Get.back, // بس يسكر
-    );
+    Get.snackbar('Error', 'Passwords do not match');
     return;
   }
-  final userController = Get.find<UserController>();
 
-  userController.setUserSignUp(
-    firstName: firstName.value,
-    lastName: lastName.value,
-    phone: phone.value,
-    password: password.value,
-    confirmPassword: confirmPassword.value,
-    avatar: personalImage.value!.path,
-    identityImage: identityImage.value!.path,
-  );
+  isLoading.value = true;
 
-  // ⏳ انتظر Frame
-  Future.delayed(const Duration(milliseconds: 200), () {
+  try {
+    final response = await ApiService.register(
+      name: '${firstName.value} ${lastName.value}',
+      phone: phone.value,
+      password: password.value,
+      passwordConfirmation: confirmPassword.value,
+      profileImage: personalImage.value,
+      idImage: identityImage.value,
+    );
+
+    Get.snackbar('Success', response['message']);
+    Future.delayed(const Duration(milliseconds: 200), () {
     Get.offAllNamed('/successfulSignup');
   });
+  } catch (e) {
+    Get.snackbar('Error', e.toString());
+  } finally {
+    isLoading.value = false;
+  }
 }
 }

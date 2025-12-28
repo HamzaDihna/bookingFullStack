@@ -4,7 +4,7 @@ import 'package:bookingresidentialapartments/controller/navigation_controller.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'user_controller.dart';
+import '../user_controller.dart';
 
 class EditProfileController extends GetxController {
   final UserController userController = Get.find<UserController>();

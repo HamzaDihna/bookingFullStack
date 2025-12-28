@@ -1,5 +1,5 @@
-import 'package:bookingresidentialapartments/controller/auth_controller.dart';
-import 'package:bookingresidentialapartments/controller/theme_controller.dart';
+import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
+import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:bookingresidentialapartments/screens/add_apartment_page.dart';
 import 'package:bookingresidentialapartments/screens/chat_page.dart';

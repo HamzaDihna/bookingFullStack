@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:bookingresidentialapartments/controller/auth_controller.dart';
+import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
-import 'package:bookingresidentialapartments/controller/theme_controller.dart';
+import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

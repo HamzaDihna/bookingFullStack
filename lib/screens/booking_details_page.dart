@@ -2,7 +2,7 @@ import 'package:bookingresidentialapartments/widget/apartment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/booking_model.dart';
-import '../controller/booking_controller.dart';
+import '../controller/booking/booking_controller.dart';
 
 class BookingDetailsPage extends StatelessWidget {
   const BookingDetailsPage({super.key});

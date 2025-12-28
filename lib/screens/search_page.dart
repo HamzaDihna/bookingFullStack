@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:get/get.dart';
-import '../controller/search_controller.dart';
+import '../controller/home/search_controller.dart';
 
 class SearchPage extends StatelessWidget {
  final SearchController controller = Get.put(SearchController());
