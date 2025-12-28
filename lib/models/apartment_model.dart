@@ -25,16 +25,17 @@ class ApartmentModel {
   });
 
 factory ApartmentModel.fromJson(Map<String, dynamic> json) {
-    return ApartmentModel(
-      id: json['id'].toString(), // تحويل لـ String دائماً للأمان
-      title: json['title'] ?? '',
-      location: json['location'] ?? '',
-      price: double.tryParse(json['price'].toString()) ?? 0.0,
-      rating: double.tryParse(json['rating'].toString()) ?? 0.0,
-      image: json['profile_image'] ?? '', // تأكد من اسم الحقل من الباك
-      rooms: json['rooms'] ?? 0,
-      hasWifi: json['has_wifi'] == 1 || json['has_wifi'] == true, // Laravel يرجع boolean كـ 0 أو 1 غالباً
-      description: json['description'] ?? '',
-      isFavorite: json['is_favorite'] ?? false,
-    );
-  }}
+  return ApartmentModel(
+    id: json['id'].toString(),
+    title: json['title'] ?? '',
+    // دمج المحافظة والمدينة ليعطيك الـ location
+    location: "${json['governorate']} - ${json['city']}", 
+    price: double.tryParse(json['price_per_night'].toString()) ?? 0.0,
+    rating: double.tryParse(json['average_rating'].toString()) ?? 0.0,
+    image: json['main_image'] ?? 'assets/images/Group.png', // تأكد من اسم الحقل من الباك
+    rooms: json['bedrooms'] ?? 0, // عدلناه ليتطابق مع Migration
+    hasWifi: json['has_wifi'] == 1 || json['has_wifi'] == true,
+    description: json['description'] ?? '',
+    isFavorite: json['is_favorite'] ?? false,
+  );
+}}

@@ -38,6 +38,14 @@ class LoginController extends GetxController {
       userData: response['user'],
       token: response['token'],
     );
+   Get.snackbar(
+        'Welcome ${userController.fullName}!',
+        'Login successful',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
 
     Get.offAllNamed('/homepage');
   } catch (e) {

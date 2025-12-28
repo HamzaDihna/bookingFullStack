@@ -48,14 +48,23 @@ class HomePage extends StatelessWidget {
          FilterBar(controller: controller),
           Expanded(
             child: Obx(() {
-              return ListView.builder(
+              if (controller.isLoading.value) {
+    return const Center(child: CircularProgressIndicator()); // شكل التحميل
+  }
+              return Column(
+    children: [
+      FilterBar(controller: controller),
+      Expanded(
+        child: controller.filteredApartments.isEmpty
+            ? const Center(child: Text("No apartments found")):ListView.builder(
                 itemCount: controller.filteredApartments.length,
                 itemBuilder: (context, index) {
                   return ApartmentCard(
                     apartment: controller.filteredApartments[index],
                   );
                 },
-              );
+              ),
+      ),],);
             }),
           ),
         ],

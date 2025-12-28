@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'dart:io';
 
 class ApiService {
- // في ملف ApiService.dart
 static const String _baseUrl = 'https://nonevil-emmalynn-inoperative.ngrok-free.dev/api/';
 
   static final Dio _dio = Dio(BaseOptions(
@@ -27,7 +26,26 @@ static const String _baseUrl = 'https://nonevil-emmalynn-inoperative.ngrok-free.
       throw e.response?.data['message'] ?? 'Login failed';
     }
   }
-
+// أضف هذه الدالة داخل كلاس ApiService
+static Future<List<dynamic>> getApartments(String token) async {
+  try {
+    final response = await _dio.get('apartments', 
+      options: Options(headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      }),
+    );
+    // التحليل الصحيح للرد القادم من Laravel Paginate
+    if (response.data != null && response.data['success'] == true) {
+      // الـ Paginate يضع القائمة داخل response.data['data']['data']
+      return response.data['data']['data'] as List<dynamic>;
+    }
+    return []; // نفترض أن الباك إند يرسل قائمة مباشرة
+  } on DioException catch (e) {
+    print("❌ API Error: ${e.response?.data}");
+    throw e.response?.data['message'] ?? 'Failed to load apartments';
+  }
+}
   // REGISTER
  static Future<Map<String, dynamic>> register({
     required String name,

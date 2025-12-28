@@ -1,7 +1,10 @@
+import 'package:bookingresidentialapartments/controller/user_controller.dart';
+import 'package:bookingresidentialapartments/services/api_service.dart.dart';
 import 'package:get/get.dart';
 import '../../models/apartment_model.dart';
 
 class HomeController extends GetxController {
+  var isLoading = false.obs;
   RxBool isFiltering = false.obs;
 RxInt minPrice = 0.obs;
 RxInt maxPrice = 1000.obs;
@@ -18,7 +21,7 @@ RxMap<String, dynamic> activeFilters = <String, dynamic>{}.obs;
   @override
   void onInit() {
     super.onInit();
-
+fetchApartments();
     allApartments.addAll([
       ApartmentModel(
         id: '1',
@@ -50,7 +53,32 @@ RxMap<String, dynamic> activeFilters = <String, dynamic>{}.obs;
     filteredApartments.assignAll(allApartments);
   }
 
-  
+  Future<void> fetchApartments() async {
+    try {
+      isLoading.value = true;
+      
+      // 1. الحصول على التوكن من UserController
+      final userController = Get.find<UserController>();
+      String token = userController.token.value;
+
+      // 2. طلب البيانات من ApiService
+      final List<dynamic> data = await ApiService.getApartments(token);
+
+      // 3. تحويل البيانات القادمة لـ Models
+      List<ApartmentModel> loadedApartments = data.map((json) {
+        return ApartmentModel.fromJson(json);
+      }).toList();
+
+      allApartments.assignAll(loadedApartments);
+      filteredApartments.assignAll(loadedApartments);
+
+    } catch (e) {
+      Get.snackbar("Error", "Could not load apartments: $e");
+    } finally {
+      isLoading.value = false;
+    }
+    
+  }
  void applySearchFilters(Map<String, dynamic> filters) {
   activeFilters.assignAll(filters);
   isFiltering.value = true;
