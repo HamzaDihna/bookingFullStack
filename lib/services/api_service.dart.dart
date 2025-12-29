@@ -10,12 +10,16 @@ static const String _baseUrl = 'https://nonevil-emmalynn-inoperative.ngrok-free.
       'Accept': 'application/json',
     },
   ));
-
+static void setToken(String token) {
+  _dio.options.headers['Authorization'] = 'Bearer $token';
+}
   // LOGIN
   static Future<Map<String, dynamic>> login({
     required String phone,
     required String password,
+    
   }) async {
+    
     try {
       final response = await _dio.post('login', data: {
         'phone': phone,
@@ -23,17 +27,19 @@ static const String _baseUrl = 'https://nonevil-emmalynn-inoperative.ngrok-free.
       });
       return response.data;
     } on DioException catch (e) {
-      throw e.response?.data['message'] ?? 'Login failed';
+      if (e.response?.data is Map) {
+      return Future.error(e.response?.data['message'] ?? 'Login failed');
+    } else {
+      return Future.error(e.response!.data.toString());
     }
+    }
+    
   }
+  
 // أضف هذه الدالة داخل كلاس ApiService
-static Future<List<dynamic>> getApartments(String token) async {
+static Future<List<dynamic>> getApartments() async {
   try {
     final response = await _dio.get('apartments', 
-      options: Options(headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      }),
     );
     // التحليل الصحيح للرد القادم من Laravel Paginate
     if (response.data != null && response.data['success'] == true) {
@@ -45,7 +51,74 @@ static Future<List<dynamic>> getApartments(String token) async {
     print("❌ API Error: ${e.response?.data}");
     throw e.response?.data['message'] ?? 'Failed to load apartments';
   }
+  
 }
+static Future<bool> editBooking({
+  required String bookingId,
+  required String startDate,
+  required String endDate,
+}) async {
+  try {
+    final response = await _dio.put(
+      'bookings/$bookingId',
+      data: {
+        'start_date': startDate,
+        'end_date': endDate,
+      },
+    );
+    return response.statusCode == 200;
+  } on DioException catch (e) {
+    throw e.response?.data['message'] ?? 'Failed to edit booking';
+  }
+}
+
+static Future<bool> cancelBooking(String bookingId) async {
+    try {
+      final response = await _dio.post('bookings/$bookingId/cancel');
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      throw e.response?.data['message'] ?? 'فشل في إلغاء الحجز';
+    }
+  }
+static Future<bool> createBooking({
+    required int apartmentId, 
+    required String startDate, 
+    required String endDate
+  }) async {
+    try {
+      final response = await _dio.post('bookings', 
+        data: {
+          'apartment_id': apartmentId,
+          'start_date': startDate,
+          'end_date': endDate,
+        },
+      
+      );
+      return response.statusCode == 201 || response.statusCode == 200;
+    } on DioException catch (e) {
+       print("❌ Create Booking Error: ${e.response?.data}");
+       throw e.response?.data['message'] ?? 'فشل في إرسال طلب الحجز';
+    }
+  }
+// 1. جلب حجوزات المستخدم (المستأجر)
+  static Future<List<dynamic>> getMyBookings(String type) async {
+    try {
+      // ملاحظة: يجب أن تحصل على الـ token المخزن عندك (مثلاً من GetStorage أو SharedPreferences)
+      // سأفترض هنا أنك تمرره أو تجلبه بطريقة ما، لكن للتبسيط الآن سأضعه كخيار
+      final response = await _dio.get('bookings', 
+        queryParameters: {'type': type},
+      
+      );
+
+      if (response.data != null && response.data['success'] == true) {
+        return response.data['data'] as List<dynamic>;
+      }
+      return [];
+    } on DioException catch (e) {
+      print("❌ Get Bookings Error: ${e.response?.data}");
+      throw e.response?.data['message'] ?? 'فشل في جلب الحجوزات';
+    }
+  }
   // REGISTER
  static Future<Map<String, dynamic>> register({
     required String name,

@@ -60,9 +60,8 @@ fetchApartments();
       // 1. الحصول على التوكن من UserController
       final userController = Get.find<UserController>();
       String token = userController.token.value;
-
       // 2. طلب البيانات من ApiService
-      final List<dynamic> data = await ApiService.getApartments(token);
+      final List<dynamic> data = await ApiService.getApartments();
 
       // 3. تحويل البيانات القادمة لـ Models
       List<ApartmentModel> loadedApartments = data.map((json) {

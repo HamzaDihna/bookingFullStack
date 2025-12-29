@@ -44,23 +44,19 @@ void showConfirmBookingDialog(
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async{
             final bookingController =
                 Get.find<BookingController>();
 
-            bookingController.addBooking(
-              BookingModel(
-                id: DateTime.now()
-                    .millisecondsSinceEpoch
-                    .toString(),
-                apartment: apartment,
-                startDate: controller.startDate!,
-                endDate: controller.endDate!,
-              ),
-            );
+          final newBooking = BookingModel(
+      id: "0", 
+      apartment: apartment,
+      startDate: controller.startDate!,
+      endDate: controller.endDate!,
+    );
 
-            Get.back();
-            Get.offNamed('/successfulBooking');
+    // استدعاء الدالة التي تربط مع السيرفر
+   await bookingController.addBooking(newBooking);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue,

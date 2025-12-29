@@ -1,16 +1,32 @@
 import 'package:bookingresidentialapartments/models/rating_model.dart';
+import 'package:bookingresidentialapartments/services/api_service.dart.dart';
 import 'package:get/get.dart';
 import '../../models/booking_model.dart';
 
 class BookingController extends GetxController {
   final bookings = <BookingModel>[].obs;
-
+var isLoading = false.obs;
   /// 🔹 التاب المختار
   final selectedStatus = BookingStatus.all.obs;
 
   /// ➕ إضافة حجز
-  void addBooking(BookingModel booking) {
-    bookings.add(booking);
+  Future<void> addBooking(BookingModel booking) async {
+    try {
+      // إرسال البيانات لـ Laravel
+      bool success = await ApiService.createBooking(
+        apartmentId: int.parse(booking.apartment.id),
+        startDate: booking.startDate.toIso8601String().split('T')[0],
+        endDate: booking.endDate.toIso8601String().split('T')[0],
+      );
+
+      if (success) {
+        Get.back(); // إغلاق الدايلوج
+        Get.offNamed('/successfulBooking'); // صفحة النجاح
+        fetchMyBookings(); // تحديث القائمة في الخلفية
+      }
+    } catch (e) {
+      Get.snackbar("Booking Failed", e.toString());
+    }
   }
   List<BookingModel> get filteredBookings {
   final status = selectedStatus.value;
@@ -28,40 +44,61 @@ void changeStatus(BookingStatus status) {
 }
 
   /// ❌ إلغاء حجز (مرة واحدة فقط)
-  void cancelBooking(String bookingId) {
-  final booking =
-      bookings.firstWhere((b) => b.id == bookingId);
+  Future<void> cancelBooking(String bookingId) async {
+  try {
+    isLoading.value = true;
 
-  if (booking.status != BookingStatus.current) return;
+    // 🔥 إلغاء فعلي من السيرفر
+    bool success = await ApiService.cancelBooking(bookingId);
 
-  final today = DateTime.now();
-  final todayOnly =
-      DateTime(today.year, today.month, today.day);
+    if (success) {
+      // 🔄 إعادة تحميل الحجوزات من Laravel
+      await fetchMyBookings();
 
-  final startOnly = DateTime(
-    booking.startDate.year,
-    booking.startDate.month,
-    booking.startDate.day,
-  );
-
-  if (!startOnly.isAfter(todayOnly)) return;
-
-  booking.status = BookingStatus.canceled;
-  bookings.refresh();
+      Get.snackbar(
+        "Success",
+        "Booking canceled successfully",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  } catch (e) {
+    Get.snackbar(
+      "Error",
+      e.toString(),
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  } finally {
+    isLoading.value = false;
+  }
 }
 
-void editBookingDates(
-  String bookingId,
-  DateTime newStart,
-  DateTime newEnd,
-) {
-  final booking =
-      bookings.firstWhere((b) => b.id == bookingId);
+Future<void> editBookingDates({
+  required String bookingId,
+  required DateTime newStart,
+  required DateTime newEnd,
+}) async {
+  try {
+    isLoading.value = true;
 
-  booking.startDate = newStart;
-  booking.endDate = newEnd;
+    bool success = await ApiService.editBooking(
+      bookingId: bookingId,
+      startDate: newStart.toIso8601String().split('T')[0],
+      endDate: newEnd.toIso8601String().split('T')[0],
+    );
 
-  bookings.refresh();
+    if (success) {
+      await fetchMyBookings(); // 🔄 إعادة تحميل من السيرفر
+      Get.snackbar(
+        'Success',
+        'Booking updated successfully',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  } catch (e) {
+    Get.snackbar('Error', e.toString());
+  } finally {
+    isLoading.value = false;
+  }
 }
 
 List<DateTime> getBookedDates({String? excludeBookingId}) {
@@ -119,6 +156,31 @@ void addRating(
 
   bookings.refresh();
 }
-
+Future<void> fetchMyBookings() async {
+    try {
+      isLoading.value = true;
+      // نحدد الـ type بناءً على التاب المختار
+      String type = _mapStatusToType(selectedStatus.value);
+      
+      // استدعاء ApiService (تأكد من كتابة الدالة فيه)
+     List<dynamic> responseData = await ApiService.getMyBookings(type);
+     List<BookingModel> fetchedBookings = responseData
+        .map((e) => BookingModel.fromJson(e))
+        .toList();
+    bookings.assignAll(fetchedBookings);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to load bookings: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  String _mapStatusToType(BookingStatus status) {
+    switch (status) {
+      case BookingStatus.current: return 'current';
+      case BookingStatus.previous: return 'past';
+      case BookingStatus.canceled: return 'rejected';
+      default: return ''; // لـ 'all'
+    }
+  }
 }
 

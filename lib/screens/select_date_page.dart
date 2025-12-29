@@ -293,11 +293,11 @@ void _showEditConfirmDialog(
         ),
         ElevatedButton(
           onPressed: () {
-            bookingController.editBookingDates(
-              booking.id,
-              controller.newStart!,
-              controller.newEnd!,
-            );
+              bookingController.editBookingDates(
+  bookingId: booking.id,
+  newStart: controller.newStart!,
+  newEnd: controller.newEnd!,
+);
             Get.back(); // dialog
             Get.back(); // page
           },

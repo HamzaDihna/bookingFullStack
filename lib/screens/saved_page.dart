@@ -18,6 +18,9 @@ class _SavedPageState extends State<SavedPage> {
   void initState() {
     super.initState();
     Get.find<BookingController>().updateBookingStatuses();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Get.find<BookingController>().fetchMyBookings();
+  });
   }
 
   @override
@@ -87,6 +90,9 @@ class _SavedPageState extends State<SavedPage> {
           /// 🔹 LISTVIEW (المهم)
           Expanded(
             child: Obx(() {
+              if (controller.isLoading.value) {
+    return const Center(child: CircularProgressIndicator());
+  }
               if (controller.filteredBookings.isEmpty) {
                 return const Center(
                   child: Text(
@@ -95,7 +101,7 @@ class _SavedPageState extends State<SavedPage> {
                   ),
                 );
               }
-
+              
              return ListView.separated(
               
                 padding: const EdgeInsets.only(
@@ -107,7 +113,7 @@ class _SavedPageState extends State<SavedPage> {
   final booking = controller.filteredBookings[index];
 
   return AnimatedSwitcher(
-    duration: const Duration(milliseconds: 400),
+    duration: const Duration(milliseconds: 600),
     transitionBuilder: (child, animation) {
       return SlideTransition(
         position: Tween<Offset>(

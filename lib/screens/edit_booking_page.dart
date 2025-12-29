@@ -172,11 +172,8 @@ class EditBookingPage extends StatelessWidget {
                                 controller.newEnd != null
                             ? () {
                                final today = DateTime.now();
-                                _showEditConfirmDialog(
-    bookingController,
-    booking,
-    controller,
-  );
+                                 final todayOnly =DateTime(today.year, today.month, today.day);
+
    if (!controller.newStart!.isAfter(
     DateTime(today.year, today.month, today.day),
   )) {
@@ -294,11 +291,11 @@ void _showEditConfirmDialog(
         ),
         ElevatedButton(
           onPressed: () {
-            bookingController.editBookingDates(
-              booking.id,
-              controller.newStart!,
-              controller.newEnd!,
-            );
+           bookingController.editBookingDates(
+  bookingId: booking.id,
+  newStart: controller.newStart!,
+  newEnd: controller.newEnd!,
+);
             Get.back(); // dialog
             Get.back(); // page
             Get.back(); // page

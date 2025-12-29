@@ -13,7 +13,6 @@ import 'package:bookingresidentialapartments/screens/edit_booking_page.dart';
 import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:bookingresidentialapartments/screens/getStarted_screen.dart';
 import 'package:bookingresidentialapartments/screens/my_apartments_page.dart';
-import 'package:bookingresidentialapartments/screens/pending_approval_page.dart';
 import 'package:bookingresidentialapartments/screens/profile_page.dart';
 import 'package:bookingresidentialapartments/screens/search_page.dart';
 import 'package:bookingresidentialapartments/screens/select_date_page.dart';
@@ -21,6 +20,7 @@ import 'package:bookingresidentialapartments/screens/signup_page.dart';
 import 'package:bookingresidentialapartments/screens/splash_screen.dart';
 import 'package:bookingresidentialapartments/screens/successful_booking_page.dart';
 import 'package:bookingresidentialapartments/screens/successful_signup.dart';
+import 'package:bookingresidentialapartments/services/api_service.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -29,6 +29,11 @@ Future<void> main() async {
   await GetStorage.init();
   Get.put(ThemeController());
   Get.put(UserController());
+  final userController = Get.find<UserController>();
+  userController.loadUserFromStorage();
+  if (userController.token.value.isNotEmpty) {
+    ApiService.setToken(userController.token.value);
+  }
   Get.put(AuthController());
 Get.put(NavigationController(), permanent: true);
 Get.put(BookingController(), permanent: true);
@@ -61,7 +66,6 @@ class bookingresidentialapartments extends StatelessWidget {
    GetPage(name: '/signup', page: () => const SignUpPage()),
    GetPage(name: '/SearchPage', page: () =>  SearchPage()),
    GetPage(name: '/profile', page: () =>  ProfilePage()),
-   GetPage( name: '/pendingApproval', page: () => const PendingApprovalPage(),),
 
     GetPage(name: '/successfulSignup', page: () => const SuccessfulPageSignup()),
     GetPage(name: '/successfulBooking', page: () => const SuccessfulBookingPage()),
