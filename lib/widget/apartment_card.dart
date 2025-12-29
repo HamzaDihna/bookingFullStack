@@ -63,6 +63,7 @@ final bool enableNavigation;
                           controller.toggleFavorite(apartment.id);
                         },
                         child: Container(
+                          
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.9),
@@ -74,16 +75,18 @@ final bool enableNavigation;
                               ),
                             ],
                           ),
-                          child: Icon(
-                            apartment.isFavorite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: Colors.redAccent,
-                            size: 20,
+                            child: Icon(
+                              apartment.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: apartment.isFavorite ? Colors.red : Colors.grey,
+                              size: 20,
+                             
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    
                   ],
                 ),
 

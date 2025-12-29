@@ -154,4 +154,18 @@ static Future<bool> createBooking({
       
       throw e.response?.data['message'] ?? 'فشل الاتصال بالسيرفر';
     }
-  }}
+  }
+  static Future<bool> toggleFavorite(int apartmentId) async {
+  final response = await _dio.post(
+    'apartments/$apartmentId/favorite',
+  );
+
+  return response.data['is_favorite'] == true;
+}
+
+// 📥 get favorites
+static Future<List<dynamic>> getFavorites() async {
+  final response = await _dio.get('favorites');
+  return response.data['data'];
+}
+  }

@@ -1,6 +1,7 @@
 import 'package:bookingresidentialapartments/binding/app_binding.dart';
 import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
 import 'package:bookingresidentialapartments/controller/booking/booking_controller.dart';
+import 'package:bookingresidentialapartments/controller/home/favorite_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
@@ -34,6 +35,7 @@ Future<void> main() async {
   if (userController.token.value.isNotEmpty) {
     ApiService.setToken(userController.token.value);
   }
+   Get.put(FavoriteController(), permanent: true);
   Get.put(AuthController());
 Get.put(NavigationController(), permanent: true);
 Get.put(BookingController(), permanent: true);

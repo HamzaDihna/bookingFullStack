@@ -1,3 +1,4 @@
+import 'package:bookingresidentialapartments/controller/home/favorite_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:bookingresidentialapartments/services/api_service.dart.dart';
 import 'package:get/get.dart';
@@ -132,14 +133,38 @@ void clearFilters() {
     }
   }
 
-  void toggleFavorite(String id) {
-    final index =
-        allApartments.indexWhere((apartment) => apartment.id == id);
+Future<void> toggleFavorite(String id) async {
+  final favController = Get.find<FavoriteController>();
 
-    if (index != -1) {
-      allApartments[index].isFavorite =
-          !allApartments[index].isFavorite;
-      filteredApartments.refresh();
+  final index =
+      allApartments.indexWhere((a) => a.id == id);
+  if (index == -1) return;
+
+  final apartment = allApartments[index];
+
+  // optimistic update
+  apartment.isFavorite = !apartment.isFavorite;
+  filteredApartments.refresh();
+
+  try {
+    final isFav =
+        await ApiService.toggleFavorite(int.parse(id));
+
+    apartment.isFavorite = isFav;
+    filteredApartments.refresh();
+
+    // 🔥 تحديث صفحة المفضلة مباشرة
+    if (isFav) {
+      favController.addFavorite(apartment);
+    } else {
+      favController.removeFavorite(apartment.id);
     }
+  } catch (e) {
+    apartment.isFavorite = !apartment.isFavorite;
+    filteredApartments.refresh();
+    Get.snackbar('Error', e.toString());
   }
+}
+
+
 }
