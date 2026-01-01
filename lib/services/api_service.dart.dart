@@ -168,4 +168,62 @@ static Future<List<dynamic>> getFavorites() async {
   final response = await _dio.get('favorites');
   return response.data['data'];
 }
+static Future<Map<String, dynamic>> updateProfile({
+  required String name,
+  required String phone,
+  String? oldPassword,
+  String? newPassword,
+  File? profileImage,
+  File? idImage,
+  String? birthDate,
+}) async {
+  final formData = FormData.fromMap({
+    'name': name,
+    'phone': phone,
+    if (oldPassword != null) 'old_password': oldPassword,
+    if (newPassword != null) 'new_password': newPassword,
+    if (newPassword != null) 'new_password_confirmation': newPassword,
+    if (birthDate != null) 'birth_date': birthDate,
+    if (profileImage != null)
+      'profile_image': await MultipartFile.fromFile(profileImage.path),
+    if (idImage != null)
+      'id_image': await MultipartFile.fromFile(idImage.path),
+  });
+
+  final response = await _dio.post('profile/update', data: formData);
+  return response.data;
+}
+static Future<Map<String, dynamic>> addApartment({
+  required String title,
+  required String governorate,
+  required String city,
+  required double pricePerNight,
+  required int bedrooms,
+  required bool hasWifi,
+  required File image,
+  required String description,
+}) async {
+  try {
+    final formData = FormData.fromMap({
+      'title': title,
+      'governorate': governorate,
+      'city': city,
+      'price_per_night': pricePerNight,
+      'bedrooms': bedrooms,
+      'has_wifi': hasWifi ? 1 : 0,
+      'image': await MultipartFile.fromFile(image.path),
+      'description': description,   
+    });
+
+    final response = await _dio.post(
+      'apartments',
+      data: formData,
+    );
+
+    return response.data;
+  } on DioException catch (e) {
+    print("❌ Add Apartment Error: ${e.response?.data}");
+    throw e.response?.data['message'] ?? 'Failed to add apartment';
+  }
+}
   }

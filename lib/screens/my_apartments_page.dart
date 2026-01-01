@@ -18,7 +18,7 @@ class MyApartmentsPage extends StatelessWidget {
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(250, 0, 145, 199),
+        backgroundColor: Color.fromARGB(255, 95, 95, 95),
         title: const Text(
           'My Apartments',
           style: TextStyle(
@@ -36,14 +36,6 @@ class MyApartmentsPage extends StatelessWidget {
               if (result != null && result is Map<String, dynamic>) {
                 controller.applySearchFilters(result);
               }
-            },
-          ),
-
-          /// ➕ Add Apartment
-          IconButton(
-            icon: const Icon(Icons.add, color: Colors.white),
-            onPressed: () {
-              Get.toNamed('/addApartment');
             },
           ),
         ],

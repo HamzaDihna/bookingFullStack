@@ -1,13 +1,13 @@
 class ApartmentModel {
-  final String id;
-  final String title;
-  final String location;
-  final double price;
-  final double rating; // average rating
-  final String image;
-  final int rooms;
-  final bool hasWifi;
-  final String description;
+   String id;
+   String title;
+   String location;
+   double price;
+   double rating; // average rating
+   String image;
+   int rooms;
+   bool hasWifi;
+   String description;
 
   bool isFavorite;
 
@@ -26,14 +26,15 @@ class ApartmentModel {
 
 factory ApartmentModel.fromJson(Map<String, dynamic> json) {
   return ApartmentModel(
-    id: json['id'].toString(),
+     id: json['id'].toString(),
     title: json['title'] ?? '',
-    // دمج المحافظة والمدينة ليعطيك الـ location
-    location: "${json['governorate']} - ${json['city']}", 
+    location: "${json['governorate']} - ${json['city']}",
     price: double.tryParse(json['price_per_night'].toString()) ?? 0.0,
-    rating: double.tryParse(json['average_rating'].toString()) ?? 0.0,
-    image: json['main_image'] ?? 'assets/images/Group.png', // تأكد من اسم الحقل من الباك
-    rooms: json['bedrooms'] ?? 0, // عدلناه ليتطابق مع Migration
+    rating: double.tryParse(json['average_rating']?.toString() ?? '') ?? 0.0,
+    image: (json['images'] != null && json['images'].isNotEmpty)
+        ? json['images'][0]['path']
+        : 'assets/images/Group.png',
+    rooms: int.tryParse(json['bedrooms'].toString()) ?? 0,
     hasWifi: json['has_wifi'] == 1 || json['has_wifi'] == true,
     description: json['description'] ?? '',
     isFavorite: json['is_favorite'] ?? false,

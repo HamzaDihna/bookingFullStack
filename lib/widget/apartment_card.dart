@@ -1,3 +1,5 @@
+import 'package:bookingresidentialapartments/controller/home/favorite_controller.dart';
+import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/apartment_model.dart';
@@ -6,11 +8,13 @@ import '../controller/home/home_controller.dart';
 class ApartmentCard extends StatelessWidget {
   final ApartmentModel apartment;
 final bool enableNavigation;
-  const ApartmentCard({super.key, required this.apartment, this.enableNavigation = true});
+ final bool isOwnerView;
+  const ApartmentCard({super.key, required this.apartment, this.enableNavigation = true, this.isOwnerView = false});
 
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.find<HomeController>();
+  final favController = Get.find<FavoriteController>();
 
     return GestureDetector(
       onTap: enableNavigation ? () {
@@ -107,16 +111,16 @@ final bool enableNavigation;
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_on,
                         size: 16,
-                        color: Colors.blueAccent,
+                        color:  isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : Colors.blueAccent,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         apartment.location,
-                        style: const TextStyle(
-                          color: Colors.blueAccent,
+                        style: TextStyle(
+                          color: isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : Colors.blueAccent,
                         ),
                       ),
                     ],
@@ -155,16 +159,16 @@ final bool enableNavigation;
                             children: [
                               Text(
                                 apartment.price.toStringAsFixed(0),
-                                style: const TextStyle(
-                                  color: Colors.blueAccent,
+                                style: TextStyle(
+                                  color:  isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : Colors.blueAccent,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 34,
                                   height: 1,
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.attach_money,
-                                color: Colors.blueAccent,
+                                color:  isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : Colors.blueAccent,
                                 size: 28,
                               ),
                             ],
@@ -203,10 +207,10 @@ final bool enableNavigation;
                       const SizedBox(width: 16),
 
                       if (apartment.hasWifi) ...[
-                        const Icon(
+                        Icon(
                           Icons.wifi,
                           size: 16,
-                          color: Colors.blue,
+                          color:  isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : Colors.blue,
                         ),
                         const SizedBox(width: 4),
                         const Text('WiFi'),

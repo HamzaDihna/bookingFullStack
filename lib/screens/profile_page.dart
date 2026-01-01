@@ -13,9 +13,11 @@ class ProfilePage extends StatelessWidget {
 final UserController userController = Get.find<UserController>();
 final ThemeController themeController = Get.find<ThemeController>();
 final AuthController authController = Get.find<AuthController>();
-
+final navController = Get.find<NavigationController>();
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+    final isOwner = navController.isOwnerMode.value;
     return Scaffold(
        appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -23,7 +25,8 @@ final AuthController authController = Get.find<AuthController>();
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 145, 199),
+        backgroundColor:  isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
+        elevation: isOwner ? 0 : 4,
         title: const Text(
           'Profile',
           style: TextStyle(
@@ -86,7 +89,7 @@ body: Obx(() => Padding(
         height: 40,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 0, 145, 199),
+            backgroundColor:  isOwner ? Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -124,7 +127,7 @@ body: Obx(() => Padding(
   title: Obx(() {
     final nav = Get.find<NavigationController>();
     return Text(
-      nav.isOwnerMode.value ? 'Home' : 'My Apartments',
+       nav.isOwnerMode.value ? 'home' : 'My apartments',
     );
   }),
   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -152,8 +155,9 @@ body: Obx(() => Padding(
      
     );
     
+  });
   }
-  Widget _buildAvatar(String avatar) {
+Widget _buildAvatar(String avatar) {
   // 1️⃣ ما في صورة
   if (avatar.isEmpty) {
     return Image.asset(
@@ -164,30 +168,24 @@ body: Obx(() => Padding(
     );
   }
 
-  // 2️⃣ صورة من الإنترنت
-  if (avatar.startsWith('http')) {
-    return Image.network(
-      avatar,
-      fit: BoxFit.cover,
-      width: 100,
-      height: 100,
-      errorBuilder: (_, __, ___) {
-        return Image.asset(
-          'assets/images/imageAvatar.png',
-          fit: BoxFit.cover,
-          width: 100,
-          height: 100,
-        );
-      },
-    );
-  }
+  // 2️⃣ صورة من السيرفر
+  final imageUrl = avatar.startsWith('http')
+      ? avatar
+      : 'https://nonevil-emmalynn-inoperative.ngrok-free.dev/storage/$avatar';
 
-  // 3️⃣ صورة محلية
-  return Image.file(
-    File(avatar),
+  return Image.network(
+    imageUrl,
     fit: BoxFit.cover,
     width: 100,
     height: 100,
+    errorBuilder: (_, __, ___) {
+      return Image.asset(
+        'assets/images/imageAvatar.png',
+        fit: BoxFit.cover,
+        width: 100,
+        height: 100,
+      );
+    },
   );
 }
 

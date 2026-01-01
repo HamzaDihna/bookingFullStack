@@ -38,7 +38,7 @@ class LoginController extends GetxController {
       userData: response['user'],
       token: response['token'],
     );
-    ApiService.setToken(userController.token.value);
+    ApiService.setToken(response['token']);
    Get.snackbar(
         'Welcome ${userController.fullName}!',
         'Login successful',

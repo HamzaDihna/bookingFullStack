@@ -1,4 +1,6 @@
 import 'package:bookingresidentialapartments/controller/booking/booking_controller.dart';
+import 'package:bookingresidentialapartments/controller/owner_controller.dart';
+import 'package:bookingresidentialapartments/widget/owner_apartment_card.dart';
 import 'package:get/get.dart';
 import '../controller/user_controller.dart';
 import '../controller/core/theme_controller.dart';
@@ -14,6 +16,6 @@ class AppBinding extends Bindings {
     Get.put(AuthController(), permanent: true);
     Get.put(NavigationController(), permanent: true);
     Get.put(BookingController(), permanent: true);
-
+    Get.put(OwnerApartmentsController(), permanent: true);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
- 
+ enum AppMode { tenant, owner }
 class UserController extends GetxController {
+  Rx<AppMode> mode = AppMode.tenant.obs;
   RxString firstName = ''.obs;
   RxString lastName = ''.obs;
   RxString phone = ''.obs;
@@ -53,6 +54,7 @@ class UserController extends GetxController {
     required Map<String, dynamic> userData,
     String? token, // جعلته اختياري لأن الـ JSON الذي أرسلته لا يحتوي على توكن حالياً
   }) {
+    
     // 1. معالجة الاسم: الباك إند يرسل "name". سنأخذ أول جزء منه كـ FirstName والباقي كـ LastName
     String fullNameFromServer = userData['name'] ?? '';
     List<String> nameParts = fullNameFromServer.split(' ');
@@ -120,15 +122,28 @@ String get fullName => '${firstName.value} ${lastName.value}'.trim();
     storage.write('user_phone', phone.value);
     storage.write('user_token', token.value);
     storage.write('user_isLoggedIn', isLoggedIn.value);
+    storage.write('user_avatar', avatar.value);
+storage.write('user_identityImage', identityImage.value);
+storage.write('user_birthday', birthday.value);
+storage.write('user_mode', mode.value.name);
   }
 
   void loadUserFromStorage() {
-    final storage = GetStorage();
-    firstName.value = storage.read('user_firstName') ?? '';
-    lastName.value = storage.read('user_lastName') ?? '';
-    phone.value = storage.read('user_phone') ?? '';
-    token.value = storage.read('user_token') ?? '';
-    isLoggedIn.value = storage.read('user_isLoggedIn') ?? false;
+  final storage = GetStorage();
+  firstName.value = storage.read('user_firstName') ?? '';
+  lastName.value = storage.read('user_lastName') ?? '';
+  phone.value = storage.read('user_phone') ?? '';
+  token.value = storage.read('user_token') ?? '';
+  avatar.value = storage.read('user_avatar') ?? '';
+  identityImage.value = storage.read('user_identityImage') ?? '';
+  birthday.value = storage.read('user_birthday') ?? '';
+  isLoggedIn.value = storage.read('user_isLoggedIn') ?? false;
+  final savedMode = storage.read('user_mode');
+  if (savedMode == 'owner') {
+    mode.value = AppMode.owner;
+  } else {
+    mode.value = AppMode.tenant;
+  }
   }
 
   void clearStorage() {
@@ -139,7 +154,6 @@ String get fullName => '${firstName.value} ${lastName.value}'.trim();
   Map<String, String> get authHeaders {
     return {
       'Authorization': 'Bearer ${token.value}',
-      'Content-Type': 'application/json',
     };
   }
   bool get isProfileComplete {
@@ -181,4 +195,27 @@ void checkLoginStatus() {
     print('Token: ${token.value.isNotEmpty ? "***" : "Empty"}');
     print('=================');
   }
+Future<void> updateProfileFromApi(Map<String, dynamic> user) async {
+  String fullNameFromServer = user['name'] ?? '';
+  List<String> parts = fullNameFromServer.split(' ');
+
+  firstName.value = parts.isNotEmpty ? parts[0] : '';
+  lastName.value = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+
+  phone.value = user['phone'] ?? '';
+  avatar.value = user['profile_image'] ?? '';
+  identityImage.value = user['id_image'] ?? '';
+  birthday.value = user['birth_date'] ?? '';
+
+  saveUserToStorage();
+}
+void switchToOwner() {
+  mode.value = AppMode.owner;
+  saveUserToStorage();
+}
+
+void switchToTenant() {
+  mode.value = AppMode.tenant;
+  saveUserToStorage();
+}
 }

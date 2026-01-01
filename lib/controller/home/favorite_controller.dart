@@ -25,6 +25,7 @@ class FavoriteController extends GetxController {
       isLoading.value = false;
     }
   }
+  
     void addFavorite(ApartmentModel apartment) {
     if (!favorites.any((a) => a.id == apartment.id)) {
       favorites.add(apartment);

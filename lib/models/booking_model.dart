@@ -22,18 +22,47 @@ class BookingModel {
     this.rating,
   });
   factory BookingModel.fromJson(Map<String, dynamic> json) {
+     final start = DateTime.parse(json['start_date']);
+  final end = DateTime.parse(json['end_date']);
+
+  final initialStatus = _mapStatus(json['status']);
+
+  final finalStatus = _calculateStatus(
+    start,
+    end,
+    initialStatus,
+  );
     return BookingModel(
       id: json['id'].toString(),
-      apartment: ApartmentModel.fromJson(json['apartment']),
-      startDate: DateTime.parse(json['start_date']),
-      endDate: DateTime.parse(json['end_date']),
-      totalPrice: double.tryParse(json['total_price'].toString()),
-      // تحويل الـ String القادم من Laravel إلى Enum الخاص بك
-      status: _mapStatus(json['status']),
+    apartment: ApartmentModel.fromJson(json['apartment']),
+    startDate: start,
+    endDate: end,
+    totalPrice: double.tryParse(json['total_price'].toString()),
+    status: finalStatus,
       // إذا كان هناك تقييم مرتبط بالحجز في Laravel
       rating: json['rating'] != null ? RatingModel.fromJson(json['rating']) : null,
     );
   }
+static BookingStatus _calculateStatus(
+  DateTime start,
+  DateTime end,
+  BookingStatus backendStatus,
+) {
+  if (backendStatus == BookingStatus.canceled) {
+    return BookingStatus.canceled;
+  }
+
+  final today = DateTime.now();
+  final todayOnly = DateTime(today.year, today.month, today.day);
+
+  final endOnly = DateTime(end.year, end.month, end.day);
+
+  if (endOnly.isBefore(todayOnly)) {
+    return BookingStatus.previous;
+  }
+
+  return BookingStatus.current;
+}
 
   // دالة مساعدة لتحويل نصوص Laravel إلى Enum تطبيقك
   static BookingStatus _mapStatus(String status) {

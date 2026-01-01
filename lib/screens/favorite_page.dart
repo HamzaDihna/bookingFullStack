@@ -10,7 +10,9 @@ class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<FavoriteController>();
-
+    final navController = Get.find<NavigationController>();
+    return Obx(() {
+final isOwner = navController.isOwnerMode.value;
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -18,7 +20,7 @@ class FavoritePage extends StatelessWidget {
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 145, 199),
+        backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) :  const Color.fromARGB(255, 0, 145, 199),
         title: const Text(
           'Favorites',
           style: TextStyle(
@@ -50,10 +52,12 @@ class FavoritePage extends StatelessWidget {
           itemBuilder: (_, i) {
             return ApartmentCard(
               apartment: controller.favorites[i],
+              isOwnerView: isOwner,
             );
           },
         );
       }),
     );
   }
+    );}
 }

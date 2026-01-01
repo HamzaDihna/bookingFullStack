@@ -38,15 +38,9 @@ void onInit() {
   firstName = userController.firstName.value.obs;
   lastName  = userController.lastName.value.obs;
   phone     = userController.phone.value.obs;
-
-  if (userController.avatar.value.isNotEmpty) {
-    personalImage.value = File(userController.avatar.value);
-  }
-
-  if (userController.identityImage.value.isNotEmpty) {
-    identityImage.value = File(userController.identityImage.value);
-  }
-
+personalImage.value = null;
+  identityImage.value = null;
+ 
   if (userController.birthday.value.isNotEmpty) {
     final parts = userController.birthday.value.split('/');
     if (parts.length == 3) {

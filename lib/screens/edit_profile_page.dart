@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/controller/profile/edit_profile_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,12 @@ class EditProfilePage extends StatelessWidget {
   EditProfilePage({super.key});
 
   final EditProfileController controller = Get.put(EditProfileController());
+final navController = Get.find<NavigationController>();
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+    final isOwner = navController.isOwnerMode.value;
     return Scaffold(
       backgroundColor: const Color(0xFFF6F6F6),
       appBar: AppBar(
@@ -20,7 +24,7 @@ class EditProfilePage extends StatelessWidget {
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 145, 199),
+        backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199),
         title: const Text(
           'Profile Edit',
           style: TextStyle(
@@ -95,6 +99,7 @@ class EditProfilePage extends StatelessWidget {
   onTap: () => controller.pickImage(true),
   child: _imageBox(
     image: controller.personalImage.value,
+     serverImagePath: Get.find<UserController>().avatar.value,
     placeholderAsset: 'assets/images/imageAvatar.png',
   ),
 )),
@@ -106,6 +111,7 @@ class EditProfilePage extends StatelessWidget {
   onTap: () => controller.pickImage(false),
   child: _imageBox(
     image: controller.identityImage.value,
+    serverImagePath: Get.find<UserController>().identityImage.value,
     placeholderAsset: 'assets/images/imageIdentity.png',
   ),
 )),
@@ -152,8 +158,8 @@ class EditProfilePage extends StatelessWidget {
                         controller.showPassword.value
                             ? 'Hide password'
                             : 'Show password',
-                        style: const TextStyle(
-                            color: Color(0xFF0091C7)),
+                        style: TextStyle(
+                            color:isOwner ? const Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199),),
                       )),
                 ),
               ),
@@ -164,7 +170,7 @@ class EditProfilePage extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue,
+                      backgroundColor: isOwner ? Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199),
                       minimumSize: const Size(280, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -181,13 +187,16 @@ class EditProfilePage extends StatelessWidget {
         ),
       ),
     );
-  }
+  });}
 }
+final navController = Get.find<NavigationController>();
+    final isOwner = navController.isOwnerMode.value;
 Widget _input(
   String hint, {
   bool isPassword = false,
   bool isNumber = false,
   bool obscure = false,
+  
   Function(String)? onChanged,
 }) {
   return TextField(
@@ -202,11 +211,11 @@ Widget _input(
           const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF0091C7), width: 1.5),
+        borderSide: BorderSide(color: isOwner ? const Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199), width: 1.5),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF0091C7), width: 2),
+        borderSide: BorderSide(color: isOwner ? const Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199), width: 2),
       ),
     ),
   );
@@ -220,7 +229,7 @@ Widget _dropdown(
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12),
     decoration: BoxDecoration(
-      border: Border.all(color: const Color(0xFF0091C7), width: 1.5),
+      border: Border.all(color:isOwner ? const Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199), width: 1.5),
       borderRadius: BorderRadius.circular(12),
       color: Colors.white,
     ),
@@ -241,30 +250,35 @@ Widget _dropdown(
   );
 }
 Widget _imageBox({
-  required File? image,
+  File? image,                
+  required String serverImagePath,
   required String placeholderAsset,
 }) {
-  return Container(
-    height: 100,
-    decoration: BoxDecoration(
-      border: Border.all(color: const Color(0xFF0091C7), width: 1.5),
-      borderRadius: BorderRadius.circular(12),
-      color: Colors.grey[200],
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: image != null
-          ? Image.file(
-              image,
-              fit: BoxFit.cover,
-              width: double.infinity,
-            )
-          : Image.asset(
-              placeholderAsset,
-              fit: BoxFit.cover,
-              width: double.infinity,
-            ),
-    ),
+  if (image != null) {
+    return Image.file(
+      image,
+      fit: BoxFit.cover,
+      width: double.infinity,
+    );
+  }
+
+  if (serverImagePath.isNotEmpty) {
+    return Image.network(
+      'https://nonevil-emmalynn-inoperative.ngrok-free.dev/storage/$serverImagePath',
+      fit: BoxFit.cover,
+      width: double.infinity,
+      errorBuilder: (_, __, ___) => Image.asset(
+        placeholderAsset,
+        fit: BoxFit.cover,
+        width: double.infinity,
+      ),
+    );
+  }
+
+  return Image.asset(
+    placeholderAsset,
+    fit: BoxFit.cover,
+    width: double.infinity,
   );
 }
 Widget _yearDropdown(
@@ -277,7 +291,7 @@ Widget _yearDropdown(
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12),
     decoration: BoxDecoration(
-      border: Border.all(color: const Color(0xFF0091C7), width: 1.5),
+      border: Border.all(color: isOwner ? const Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199), width: 1.5),
       borderRadius: BorderRadius.circular(12),
       color: Colors.white,
     ),

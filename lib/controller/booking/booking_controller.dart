@@ -160,10 +160,10 @@ Future<void> fetchMyBookings() async {
     try {
       isLoading.value = true;
       // نحدد الـ type بناءً على التاب المختار
-      String type = _mapStatusToType(selectedStatus.value);
+      
       
       // استدعاء ApiService (تأكد من كتابة الدالة فيه)
-     List<dynamic> responseData = await ApiService.getMyBookings(type);
+    final responseData = await ApiService.getMyBookings('');
      List<BookingModel> fetchedBookings = responseData
         .map((e) => BookingModel.fromJson(e))
         .toList();
