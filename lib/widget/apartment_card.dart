@@ -65,12 +65,16 @@ final bool enableNavigation;
                     ),
 
                     /// ❤️ Favorite
+                    Obx(
+                      () {
+                        bool isFav = favController.isFavorite(apartment.id);
+                        return
                     Positioned(
                       bottom: 20,
                       right: 20,
                       child: GestureDetector(
                         onTap: () {
-                          controller.toggleFavorite(apartment.id);
+                          favController.toggleFavorite(apartment);
                         },
                         child: Container(
                           
@@ -86,16 +90,15 @@ final bool enableNavigation;
                             ],
                           ),
                             child: Icon(
-                              apartment.isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: apartment.isFavorite ? Colors.red : Colors.grey,
-                              size: 20,
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                         color: isFav ? Colors.red : Colors.grey,
+                         size: 20,
                              
                             ),
                           ),
                         ),
-                      ),
+                      );
+                      },)
                     
                   ],
                 ),

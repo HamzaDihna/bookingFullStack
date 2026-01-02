@@ -8,8 +8,7 @@ class ApartmentModel {
    int rooms;
    bool hasWifi;
    String description;
-
-  bool isFavorite;
+bool isFavorite;
 
   ApartmentModel({
     required this.id,
@@ -48,6 +47,6 @@ factory ApartmentModel.fromJson(Map<String, dynamic> json) {
     rooms: int.tryParse(json['bedrooms'].toString()) ?? 0,
     hasWifi: json['has_wifi'] == 1 || json['has_wifi'] == true,
     description: json['description'] ?? '',
-    isFavorite: json['is_favorite'] ?? false,
+    isFavorite: json['is_favorite'] == 1 || json['is_favorite'] == true,  
   );
 }}

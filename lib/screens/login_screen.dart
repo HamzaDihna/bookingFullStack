@@ -1,5 +1,6 @@
 
 import 'package:bookingresidentialapartments/controller/auth/login_controller.dart';
+import 'package:bookingresidentialapartments/controller/home/favorite_controller.dart';
 import 'package:bookingresidentialapartments/helper/my_flutter_app_icons.dart';
 import 'package:bookingresidentialapartments/screens/signup_page.dart';
 import 'package:bookingresidentialapartments/widget/text_field.dart';
@@ -12,9 +13,12 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   final LoginController controller = Get.put(LoginController());
-  
+  final favoriteController = Get.find<FavoriteController>();
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(

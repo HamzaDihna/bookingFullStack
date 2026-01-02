@@ -1,3 +1,4 @@
+import 'package:bookingresidentialapartments/controller/home/favorite_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,8 @@ import '../models/apartment_model.dart';
 class ApartmentDetailsPage extends StatelessWidget {
    ApartmentDetailsPage({super.key});
 final navController = Get.find<NavigationController>();
+  final favoriteController = Get.find<FavoriteController>();
+
   @override
   Widget build(BuildContext context) {
 final apartment = Get.arguments as ApartmentModel?;
@@ -111,12 +114,20 @@ if (apartment == null) {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Icon(
-                            apartment.isFavorite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: Colors.red,
-                          ),
+                          Obx(() {
+  final isFav =
+      favoriteController.isFavorite(apartment.id);
+
+  return IconButton(
+    icon: Icon(
+      isFav ? Icons.favorite : Icons.favorite_border,
+      color: Colors.red,
+    ),
+    onPressed: () {
+      favoriteController.toggleFavorite(apartment);
+    },
+  );
+}),
                         ],
                       ),
 

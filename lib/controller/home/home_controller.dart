@@ -22,6 +22,7 @@ RxMap<String, dynamic> activeFilters = <String, dynamic>{}.obs;
   @override
   void onInit() {
     super.onInit();
+     Get.find<FavoriteController>().loadFavorites();
 fetchApartments();
     allApartments.addAll([
       ApartmentModel(
@@ -135,14 +136,11 @@ void clearFilters() {
 
 Future<void> toggleFavorite(String id) async {
   final favController = Get.find<FavoriteController>();
+  final apartment =
+      allApartments.firstWhereOrNull((a) => a.id == id);
 
-  final index =
-      allApartments.indexWhere((a) => a.id == id);
-  if (index == -1) return;
+  if (apartment == null) return;
 
-  final apartment = allApartments[index];
-
-  // optimistic update
   apartment.isFavorite = !apartment.isFavorite;
   filteredApartments.refresh();
 
@@ -151,18 +149,18 @@ Future<void> toggleFavorite(String id) async {
         await ApiService.toggleFavorite(int.parse(id));
 
     apartment.isFavorite = isFav;
-    filteredApartments.refresh();
 
-    // 🔥 تحديث صفحة المفضلة مباشرة
     if (isFav) {
       favController.addFavorite(apartment);
     } else {
-      favController.removeFavorite(apartment.id);
+      favController.removeFavorite(id);
     }
+
+    filteredApartments.refresh();
   } catch (e) {
     apartment.isFavorite = !apartment.isFavorite;
     filteredApartments.refresh();
-    Get.snackbar('Error', e.toString());
+    Get.snackbar('Error', 'Failed to update favorite');
   }
 }
 
