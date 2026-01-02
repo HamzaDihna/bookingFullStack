@@ -1,10 +1,11 @@
+import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/apartment_model.dart';
 
 class ApartmentDetailsPage extends StatelessWidget {
-  const ApartmentDetailsPage({super.key});
-
+   ApartmentDetailsPage({super.key});
+final navController = Get.find<NavigationController>();
   @override
   Widget build(BuildContext context) {
 final apartment = Get.arguments as ApartmentModel?;
@@ -16,7 +17,8 @@ if (apartment == null) {
     );
   }
 
-
+   return Obx(() {
+    final isOwner = navController.isOwnerMode.value;
     return Scaffold(    
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -49,12 +51,21 @@ if (apartment == null) {
             tag: apartment.id,
             child: Stack(
               children: [
-                Image.asset(
-                  apartment.image,
-                  height: 365,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+      AspectRatio(
+  aspectRatio: 16 / 9, // أو 4 / 3
+  child: Image.network(
+    apartment.image,
+    width: double.infinity,
+    fit: BoxFit.contain, // 👈 لا قصّ
+    errorBuilder: (_, __, ___) {
+      return Image.asset(
+        'assets/images/Group.png',
+        fit: BoxFit.contain,
+      );
+    },
+  ),
+),
+
                 Container(
                   height: 365,
                   decoration: BoxDecoration(
@@ -113,12 +124,12 @@ if (apartment == null) {
 
      Row(
                         children: [
-                          const Icon(Icons.location_on,
-                              size: 16, color: Colors.blue),
+                          Icon(Icons.location_on,
+                              size: 16, color:isOwner ? const Color.fromARGB(255, 95, 95, 95) : Colors.blue,),
                           const SizedBox(width: 4),
                           Text(
                             apartment.location,
-                            style: const TextStyle(color: Colors.blue),
+                            style:  TextStyle(color: isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,),
                           ),
                         ],
                       ),
@@ -127,9 +138,9 @@ if (apartment == null) {
 
                         Text(
                         '${apartment.price}\$',
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontSize: 26,
-                          color: Colors.blue,
+                          color:isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -197,7 +208,7 @@ if (apartment == null) {
                                   TextStyle(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
                               shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(12),
@@ -238,7 +249,7 @@ if (apartment == null) {
                             child: ElevatedButton(
                               style:
                                   ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
+                                backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
                               ),
                               onPressed: () {
                                 Get.toNamed('/selectDate',
@@ -262,16 +273,23 @@ if (apartment == null) {
         ],
       ),
     );
+  });
   }
 
-  Widget _featureItem({
+  Widget _featureItem(
+    
+    {
+    
     required IconData icon,
     required String title,
     required String value,
   }) {
+    final navController = Get.find<NavigationController>();
+    return Obx(() {
+      final isOwner = navController.isOwnerMode.value;
     return Column(
       children: [
-        Icon(icon, color: Colors.blue, size: 30),
+        Icon(icon, color: isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue, size: 30),
         const SizedBox(height: 6),
         Text(title,
             style: const TextStyle(color: Colors.grey)),
@@ -283,5 +301,5 @@ if (apartment == null) {
         ),
       ],
     );
-  }
+  });}
 }

@@ -1,3 +1,5 @@
+import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
+import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:get/get.dart';
 import '../controller/home/search_controller.dart';
@@ -5,11 +7,14 @@ import '../controller/home/search_controller.dart';
 class SearchPage extends StatelessWidget {
  final SearchController controller = Get.put(SearchController());
 
-
+final navController = Get.find<NavigationController>();
   SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+        return Obx(() {
+          
+    final isOwner = navController.isOwnerMode.value;
     return Scaffold(
       backgroundColor: Colors.white,
           appBar: AppBar(
@@ -18,7 +23,7 @@ class SearchPage extends StatelessWidget {
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 145, 199),
+        backgroundColor: isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
         title: const Text(
           'Search',
           style: TextStyle(
@@ -85,7 +90,8 @@ class SearchPage extends StatelessWidget {
           ],
         ),
       ),
-    );
+  );
+        });
   }
 
   // عنوان القسم
@@ -143,11 +149,14 @@ class SearchPage extends StatelessWidget {
 
   // قسم السعر
   Widget _buildPriceSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // التسمية
-        Row(
+    final navController = Get.find<NavigationController>();
+    return Obx(() {
+      final isOwner = navController.isOwnerMode.value;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // التسمية
+          Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Obx(() => Text(
@@ -179,7 +188,7 @@ class SearchPage extends StatelessWidget {
                 '\$${controller.minPrice.value}',
                 '\$${controller.maxPrice.value}',
               ),
-              activeColor: const Color(0xFF1689C5),
+              activeColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
               inactiveColor: Colors.grey[300],
             )),
 
@@ -209,6 +218,7 @@ class SearchPage extends StatelessWidget {
 
       ],
     );
+  });
   }
 
   // حقل إدخال السعر
@@ -247,97 +257,130 @@ class SearchPage extends StatelessWidget {
   );
 }
 
-  Widget _buildRoomOptions() {
-    return Obx(() => Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: controller.roomOptions.map((option) {
-            final isSelected = controller.selectedRooms.value == option;
-            return GestureDetector(
-              onTap: () => controller.selectedRooms.value = option,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFF1689C5) : Colors.white,
-                  border: Border.all(
-                    color: isSelected
-                        ? const Color(0xFF1689C5)
-                        : const Color(0xFFE0E0E0),
-                    width: 1.5,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  option,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isSelected ? Colors.white : Colors.black87,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ));
-  }
-  Widget _buildWifiOptions() {
-    return Obx(() => Row(
-          children: [
-            _buildWifiOption('Yes', controller.hasWifi.value == 'Yes'),
-            const SizedBox(width: 16),
-            _buildWifiOption('No', controller.hasWifi.value == 'No'),
-          ],
-        ));
-  }
+ Widget _buildRoomOptions() {
+  final navController = Get.find<NavigationController>();
 
-  Widget _buildWifiOption(String text, bool isSelected) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => controller.hasWifi.value = text,
-        child: Container(
-          height: 50,
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF1689C5) : Colors.white,
-            border: Border.all(
+  return Obx(() {
+    final isOwner = navController.isOwnerMode.value;
+
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: controller.roomOptions.map((option) {
+        final isSelected = controller.selectedRooms.value == option;
+
+        return GestureDetector(
+          onTap: () => controller.selectedRooms.value = option,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(
               color: isSelected
-                  ? const Color(0xFF1689C5)
-                  : const Color(0xFFE0E0E0),
-              width: 1.5,
+                  ? (isOwner ? Colors.grey : const Color(0xFF1689C5))
+                  : Colors.white,
+              border: Border.all(
+                color: isSelected
+                    ? (isOwner ? Colors.grey : const Color(0xFF1689C5))
+                    : const Color(0xFFE0E0E0),
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.circular(8),
             ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Center(
             child: Text(
-              text,
+              option,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: isSelected ? Colors.white : Colors.black87,
               ),
             ),
           ),
+        );
+      }).toList(),
+    );
+  });
+}
+
+ Widget _buildWifiOptions() {
+  final navController = Get.find<NavigationController>();
+
+  return Obx(() {
+    final isOwner = navController.isOwnerMode.value;
+
+    return Row(
+      children: [
+        _buildWifiOption(
+          text: 'Yes',
+          isSelected: controller.hasWifi.value == 'Yes',
+          isOwner: isOwner,
+        ),
+        const SizedBox(width: 16),
+        _buildWifiOption(
+          text: 'No',
+          isSelected: controller.hasWifi.value == 'No',
+          isOwner: isOwner,
+        ),
+      ],
+    );
+  });
+}
+
+
+ Widget _buildWifiOption({
+  required String text,
+  required bool isSelected,
+  required bool isOwner,
+}) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: () => controller.hasWifi.value = text,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? (isOwner ? Colors.grey : const Color(0xFF1689C5))
+              : Colors.white,
+          border: Border.all(
+            color: isSelected
+                ? (isOwner ? Colors.grey : const Color(0xFF1689C5))
+                : const Color(0xFFE0E0E0),
+            width: 1.5,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: isSelected ? Colors.white : Colors.black87,
+            ),
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   // زر البحث
   Widget _buildSearchButton() {
+  final navController = Get.find<NavigationController>();
+
+  return Obx(() {
+    final isOwner = navController.isOwnerMode.value;
+
     return SizedBox(
       width: double.infinity,
       height: 56,
       child: ElevatedButton(
         onPressed: controller.performSearch,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1689C5),
+          backgroundColor:
+              isOwner ? const Color(0xFF5F5F5F) : const Color(0xFF1689C5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 2,
-          shadowColor: const Color(0xFF1689C5).withOpacity(0.3),
         ),
         child: const Text(
           'Search',
@@ -349,5 +392,6 @@ class SearchPage extends StatelessWidget {
         ),
       ),
     );
-  }
+  });
+}
 }

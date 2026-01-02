@@ -49,11 +49,17 @@ final bool enableNavigation;
                       padding: const EdgeInsets.all(8),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
+                        child: Image.network(
                           apartment.image,
                           height: 150,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+    return Image.asset(
+      'assets/images/Group.png',
+    
+    );
+  },
+    fit: BoxFit.cover,
                         ),
                       ),
                     ),

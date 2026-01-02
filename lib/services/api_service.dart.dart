@@ -211,7 +211,10 @@ static Future<Map<String, dynamic>> addApartment({
       'price_per_night': pricePerNight,
       'bedrooms': bedrooms,
       'has_wifi': hasWifi ? 1 : 0,
-      'image': await MultipartFile.fromFile(image.path),
+       'images[]': await MultipartFile.fromFile(
+    image.path,
+    filename: image.path.split('/').last,
+  ),
       'description': description,   
     });
 

@@ -36,6 +36,7 @@ RxString description = ''.obs;
     bedrooms.value > 0;
 
   Future<void> addApartment() async {
+    
     if (!isValid) {
       Get.snackbar('Error', 'Please fill all fields');
       return;
@@ -55,12 +56,16 @@ RxString description = ''.obs;
         image: image.value!,
         
       );
+      print('🧪 FULL RESPONSE = $response');
       print("🔥 ADD APARTMENT RESPONSE: $response");
 
      final apartmentJson =
     response['data'] ??
     response['apartment'] ??
     response;
+print('🧪 APARTMENT JSON = $apartmentJson');
+print('🧪 IMAGES = ${apartmentJson['images']}');
+print('🧪 MAIN IMAGE = ${apartmentJson['main_image']}');
 
 final apartment = ApartmentModel.fromJson(apartmentJson);
 final fixedApartment = ApartmentModel(
