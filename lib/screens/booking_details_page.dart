@@ -113,7 +113,7 @@ Row(
             fontWeight: FontWeight.bold,
           ),
         ),
-        const Text('Per day'),
+         Text('Per Day'.tr),
       ],
     ),
 

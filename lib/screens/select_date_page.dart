@@ -32,8 +32,8 @@ class SelectDatePage extends StatelessWidget {
   onPressed: () {
   Get.back(); // 🏠 Home
   },),
-        title: const Text(
-          'Select Dates',
+        title:  Text(
+          'Select Dates'.tr,
           style: TextStyle(color: Colors.white),
         ),
         
@@ -184,7 +184,7 @@ class SelectDatePage extends StatelessWidget {
                       child: OutlinedButton(
                         
                         onPressed: () => Get.back(),
-                        child: const Text('Exit'),
+                        child:  Text('Exit'.tr),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -205,8 +205,8 @@ class SelectDatePage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                         ),
-                        child: const Text(
-                          'Book Now',
+                        child:  Text(
+                          'Book Now'.tr,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

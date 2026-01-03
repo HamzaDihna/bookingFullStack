@@ -20,8 +20,8 @@ class HomePage extends StatelessWidget {
           ),
         ),
          backgroundColor: theme.appBarTheme.backgroundColor,
-        title: const Text(
-          'Home',
+        title:  Text(
+          'Home'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

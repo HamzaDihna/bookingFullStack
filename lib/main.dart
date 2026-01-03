@@ -1,6 +1,8 @@
 import 'package:bookingresidentialapartments/binding/app_binding.dart';
 import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
 import 'package:bookingresidentialapartments/controller/booking/booking_controller.dart';
+import 'package:bookingresidentialapartments/controller/core/language_controller.dart';
+import 'package:bookingresidentialapartments/controller/core/translations.dart';
 import 'package:bookingresidentialapartments/controller/home/favorite_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
@@ -39,12 +41,15 @@ Future<void> main() async {
   Get.put(AuthController());
 Get.put(NavigationController(), permanent: true);
 Get.put(BookingController(), permanent: true);
+Get.put(LanguageController(), permanent: true);
 
 runApp( bookingresidentialapartments());
 }
 
 class bookingresidentialapartments extends StatelessWidget {
    bookingresidentialapartments({super.key});
+ final LanguageController langController =
+        Get.find<LanguageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +95,17 @@ darkTheme: ThemeData(
     ),
   ),
 ),
+translations: AppTranslations(),
+  locale: Get.find<LanguageController>().locale.value,
+  fallbackLocale: const Locale('en'),
+  builder: (context, child) {
+      return Directionality(
+        textDirection: langController.isArabic
+            ? TextDirection.rtl
+            : TextDirection.ltr,
+        child: child!,
+      );
+    },
 
       themeMode:
           themeController.isDark.value ? ThemeMode.dark : ThemeMode.light,

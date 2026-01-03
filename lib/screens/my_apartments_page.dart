@@ -19,8 +19,8 @@ class MyApartmentsPage extends StatelessWidget {
           ),
         ),
         backgroundColor: Color.fromARGB(255, 95, 95, 95),
-        title: const Text(
-          'My Apartments',
+        title:  Text(
+          'My Apartments'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

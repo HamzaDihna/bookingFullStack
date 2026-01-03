@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
+import 'package:bookingresidentialapartments/controller/core/language_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
@@ -14,8 +15,11 @@ final UserController userController = Get.find<UserController>();
 final ThemeController themeController = Get.find<ThemeController>();
 final AuthController authController = Get.find<AuthController>();
 final navController = Get.find<NavigationController>();
+final LanguageController langController = Get.find<LanguageController>();
+
   @override
   Widget build(BuildContext context) {
+    
     final theme = Theme.of(context);
     return Obx(() {
     final isOwner = navController.isOwnerMode.value;
@@ -26,10 +30,10 @@ final navController = Get.find<NavigationController>();
             bottom: Radius.circular(25),
           ),
         ),
-       backgroundColor: theme.appBarTheme.backgroundColor,
+       backgroundColor: isOwner ?   Color.fromARGB(255, 95, 95, 95): theme.appBarTheme.backgroundColor,
         elevation: isOwner ? 0 : 4,
-        title: const Text(
-          'Profile',
+        title:  Text(
+          'Profile'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -95,8 +99,8 @@ body: Obx(() => Padding(
           onPressed: () {
             Get.toNamed('/editProfile');
           },
-          child: const Text(
-            'Edit Profile',
+          child:  Text(
+            'Edit Profile'.tr,
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -105,27 +109,123 @@ body: Obx(() => Padding(
       const SizedBox(height: 30),
       const Divider(),
 
-      /// 🌙 Dark Mode
+      //🌙 Dark Mode
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //      Text('Dark Mode'.tr, style: TextStyle(fontSize: 16)),
+      //     Switch(
+      //       value: themeController.isDark.value,
+      //       onChanged: themeController.toggleTheme,
+      //       activeThumbColor: Colors.blue,
+      //     ),
+      //   ],
+      // ),
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text('Dark Mode', style: TextStyle(fontSize: 16)),
-          Switch(
-            value: themeController.isDark.value,
-            onChanged: themeController.toggleTheme,
-            activeThumbColor: Colors.blue,
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      'Dark Mode'.tr,
+      style: theme.textTheme.bodyLarge,
+    ),
+    Obx(() {
+      return GestureDetector(
+        onTap: () {
+         themeController.toggleTheme(!themeController.isDark.value);
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeInOut,
+          width: 90,
+          height: 40,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: themeController.isDark.value ? Colors.green :(isOwner ? Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199)),
           ),
-        ],
-      ),
+          child: AnimatedAlign(
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.easeInOut,
+            alignment:
+                themeController.isDark.value ? Alignment.centerRight : Alignment.centerLeft,
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              
+            ),
+          ),
+        ),
+      );
+    }),
+  ],
+),
+       const SizedBox(height: 15),
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      'Language'.tr,
+      style: theme.textTheme.bodyLarge,
+    ),
+    Obx(() {
+      final isArabic = langController.isArabic;
 
-      const SizedBox(height: 20),
+      return GestureDetector(
+        onTap: () {
+          langController.toggleLanguage(!isArabic);
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeInOut,
+          width: 90,
+          height: 40,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: isArabic ? Colors.green : (isOwner ? Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199)),
+          ),
+          child: AnimatedAlign(
+            duration: const Duration(milliseconds: 350),
+            curve: Curves.easeInOut,
+            alignment:
+                isArabic ? Alignment.centerRight : Alignment.centerLeft,
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: Center(
+                child: Text(
+                  isArabic ? 'AR' : 'EN',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }),
+  ],
+),
+
+
+      const SizedBox(height: 15),
 
       ListTile(
-  contentPadding: EdgeInsets.zero,
+  contentPadding: const EdgeInsets.only(left: 14),
   title: Obx(() {
     final nav = Get.find<NavigationController>();
     return Text(
-       nav.isOwnerMode.value ? 'home' : 'My apartments',
+       nav.isOwnerMode.value ? 'Home'.tr : 'My Apartments'.tr,
     );
   }),
   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -143,7 +243,7 @@ body: Obx(() => Padding(
 
       ListTile(
         contentPadding: const EdgeInsets.only(left: 14),
-        title: const Text('Log Out'),
+        title:  Text('Log Out'.tr),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: authController.confirmLogout,
       ),

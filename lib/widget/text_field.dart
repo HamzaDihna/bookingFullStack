@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class TextFieldWidget extends StatefulWidget {
   final String? hintText;
@@ -82,7 +83,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                   });
                 },
               ),
-              const Text('Show password'),
+               Text('Show password'.tr),
             ],
           ),
       ],

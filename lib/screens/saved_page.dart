@@ -37,8 +37,8 @@ class _SavedPageState extends State<SavedPage> {
           ),
         ),
         backgroundColor: theme.appBarTheme.backgroundColor,
-        title: const Text(
-          'The Reserved',
+        title: Text(
+          'The Reserved'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class _SavedPageState extends State<SavedPage> {
                       controller.selectedStatus.value == status;
 
                   return ChoiceChip(
-                    label: Text(status.name.capitalizeFirst!),
+                    label: Text(status.name.capitalizeFirst!.tr),
                     selected: isSelected,
                     onSelected: (_) =>
                         controller.changeStatus(status),

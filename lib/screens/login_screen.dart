@@ -32,8 +32,8 @@ class LoginScreen extends StatelessWidget {
 
                 const SizedBox(height: 60),
 
-                const Text(
-                  'Welcome back',
+                 Text(
+                  'Welcome back!'.tr,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
 
@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   child: TextFieldWidget(
-                    hintText: 'Your Phone Number',
+                    hintText: 'Your Phone Number'.tr,
                     icon: MyFlutterApp.mobile,
                     isPhone: true,
                     controller: controller.phoneController,
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   child: TextFieldWidget(
-                    hintText: 'Your Password',
+                    hintText: 'Your Password'.tr,
                     icon: MyFlutterApp.lock,
                     isPassword: true,
                     controller: controller.passwordController,
@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: controller.login,
-                    child: const Text('Login', style: TextStyle(fontSize: 18,color: Colors.white)),
+                    child:  Text('Login'.tr, style: TextStyle(fontSize: 18,color: Colors.white)),
                   ),
                 ),
             
@@ -82,8 +82,8 @@ class LoginScreen extends StatelessWidget {
 Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
-    const Text(
-      "Don't have account?",
+     Text(
+      "Don't have account?".tr,
       style: TextStyle(
         fontSize: 16,
         color: Colors.black,
@@ -92,8 +92,8 @@ Row(
     TextButton(
   onPressed: controller.goToSignUp,
   
-  child: const Text(
-    'Sign up',
+  child:  Text(
+    'Sign Up'.tr,
     style: TextStyle(
       
       fontSize: 16,

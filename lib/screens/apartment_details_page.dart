@@ -28,8 +28,8 @@ if (apartment == null) {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Details',
+        title: Text(
+          'Details'.tr,
           style: TextStyle(color: Colors.white),
         ),
         leading: Padding(
@@ -155,7 +155,7 @@ if (apartment == null) {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text('Per day'),
+                       Text('Per Day'.tr),
 
                       const SizedBox(height: 20),
 
@@ -170,7 +170,7 @@ if (apartment == null) {
                             Expanded(
                               child: _featureItem(
                                 icon: Icons.bed,
-                                title: 'Rooms',
+                                title: 'Rooms'.tr,
                                 value: '${apartment.rooms}',
                               ),
                             ),
@@ -182,9 +182,9 @@ if (apartment == null) {
                             Expanded(
                               child: _featureItem(
                                 icon: Icons.wifi,
-                                title: 'Wifi',
+                                title: 'Free Wi-Fi'.tr,
                                 value:
-                                    apartment.hasWifi ? 'Yes' : 'No',
+                                    apartment.hasWifi ? 'Yes'.tr : 'No'.tr,
                               ),
                             ),
                           ],
@@ -213,8 +213,8 @@ if (apartment == null) {
                             onPressed: () {},
                             icon: const Icon(Icons.chat,
                                 color: Colors.white),
-                            label: const Text(
-                              'Chat with owner',
+                            label: Text(
+                              'Chat With Owner'.tr,
                               style:
                                   TextStyle(color: Colors.white),
                             ),
@@ -231,8 +231,8 @@ if (apartment == null) {
 
                       const SizedBox(height: 24),
 
-                      const Text(
-                        'Description',
+                       Text(
+                        'Description'.tr,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -247,35 +247,73 @@ if (apartment == null) {
 
                       const SizedBox(height: 24),
 
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () => Get.back(),
-                              child: const Text('Exit'),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton(
-                              style:
-                                  ElevatedButton.styleFrom(
-                                backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
-                              ),
-                              onPressed: () {
-                                Get.toNamed('/selectDate',
-                                    arguments: apartment);
-                              },
-                              child: const Text(
-                                'Booking',
-                                style: TextStyle(
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+             Obx(() {
+  final isOwner = navController.isOwnerMode.value;
+
+  /// 👤 TENANT VIEW
+  if (!isOwner) {
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            onPressed: () => Get.back(),
+            child:  Text('Exit'.tr),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
+            ),
+            onPressed: () {
+              Get.toNamed('/selectDate', arguments: apartment);
+            },
+            child:  Text(
+              'Booking'.tr,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// 🏠 OWNER VIEW
+  return Row(
+    children: [
+      Expanded(
+        child: OutlinedButton.icon(
+          icon: const Icon(Icons.edit),
+          label:  Text('Edit'.tr),
+          onPressed: () {
+            Get.toNamed(
+              '/editApartment',
+              arguments: apartment,
+            );
+          },
+        ),
+      ),
+      const SizedBox(width: 12),
+      Expanded(
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          icon: const Icon(Icons.delete, color: Colors.white),
+          label:  Text(
+            'Cancel'.tr,
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            _confirmDeleteApartment(apartment.id);
+          },
+        ),
+      ),
+    ],
+  );
+}),
+        ],
                   ),
                 ),
               );
@@ -286,6 +324,19 @@ if (apartment == null) {
     );
   });
   }
+void _confirmDeleteApartment(String apartmentId) {
+  Get.defaultDialog(
+    title: 'Confirm',
+    middleText: 'Are you sure you want to cancel this apartment?',
+    textCancel: 'No',
+    textConfirm: 'Yes',
+    confirmTextColor: Colors.white,
+    onConfirm: () {
+      Get.back();
+      Get.back();
+    },
+  );
+}
 
   Widget _featureItem(
     

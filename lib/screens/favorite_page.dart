@@ -22,8 +22,8 @@ final isOwner = navController.isOwnerMode.value;
           ),
         ),
         backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : theme.appBarTheme.backgroundColor,
-        title: const Text(
-          'Favorites',
+        title:  Text(
+          'Favorites'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

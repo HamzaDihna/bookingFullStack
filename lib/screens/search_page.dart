@@ -1,3 +1,4 @@
+import 'package:bookingresidentialapartments/controller/core/language_controller.dart';
 import 'package:bookingresidentialapartments/controller/navigation_controller.dart';
 import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:flutter/material.dart' hide SearchController;
@@ -6,7 +7,7 @@ import '../controller/home/search_controller.dart';
 
 class SearchPage extends StatelessWidget {
  final SearchController controller = Get.put(SearchController());
-
+final LanguageController langController = Get.find<LanguageController>();
 final navController = Get.find<NavigationController>();
   SearchPage({super.key});
 
@@ -24,8 +25,8 @@ final navController = Get.find<NavigationController>();
           ),
         ),
         backgroundColor: isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
-        title: const Text(
-          'Search',
+        title: Text(
+          'Search'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ final navController = Get.find<NavigationController>();
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 🔹 The Governorate
-            _buildSectionTitle('The Governorate ①'),
+            _buildSectionTitle('The Governorate'.tr),
             Obx(() => _buildDropdown(
   value: controller.selectedGovernorate.value,
   items: controller.governorates,
@@ -57,7 +58,7 @@ final navController = Get.find<NavigationController>();
             const SizedBox(height: 24),
 
             // 🔹 The City
-            _buildSectionTitle('The City ①'),
+            _buildSectionTitle('The City'.tr),
             Obx(() => _buildDropdown(
   value: controller.selectedCity.value,
   items: controller.cities,
@@ -68,19 +69,19 @@ final navController = Get.find<NavigationController>();
             const SizedBox(height: 24),
 
             // 🔹 Price Per Day
-            _buildSectionTitle('Price Per Day ①'),
+            _buildSectionTitle('Price Per Day'.tr),
             const SizedBox(height: 8),
             _buildPriceSection(),
             const SizedBox(height: 24),
 
             // 🔹 Rooms
-            _buildSectionTitle('Rooms ①'),
+            _buildSectionTitle('Rooms'.tr),
             const SizedBox(height: 8),
             _buildRoomOptions(),
             const SizedBox(height: 24),
 
             // 🔹 Free Wifi
-            _buildSectionTitle('Free Wifi ①'),
+            _buildSectionTitle('Free Wi-fi'.tr),
             const SizedBox(height: 8),
             _buildWifiOptions(),
             const SizedBox(height: 40),
@@ -135,7 +136,7 @@ final navController = Get.find<NavigationController>();
               child: Text(
                 item,
                 style: TextStyle(
-                  color: item == 'The Governorate' || item == 'The City'
+                  color: item == 'The Governorate'.tr || item == 'The City'.tr
                       ? Colors.grey[500]
                       : Colors.black87,
                 ),
@@ -309,13 +310,13 @@ final navController = Get.find<NavigationController>();
     return Row(
       children: [
         _buildWifiOption(
-          text: 'Yes',
+          text: 'Yes'.tr,
           isSelected: controller.hasWifi.value == 'Yes',
           isOwner: isOwner,
         ),
         const SizedBox(width: 16),
         _buildWifiOption(
-          text: 'No',
+          text: 'No'.tr,
           isSelected: controller.hasWifi.value == 'No',
           isOwner: isOwner,
         ),
@@ -382,8 +383,8 @@ final navController = Get.find<NavigationController>();
           ),
           elevation: 2,
         ),
-        child: const Text(
-          'Search',
+        child:  Text(
+          'Search'.tr,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,

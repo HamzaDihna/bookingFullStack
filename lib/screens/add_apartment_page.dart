@@ -18,8 +18,8 @@ class AddApartmentPage extends StatelessWidget {
         ),
         backgroundColor:  Color.fromARGB(255, 95, 95, 95),
 
-        title: const Text(
-          'Add Apartment',
+        title: Text(
+          'Add Apartment'.tr,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -65,53 +65,53 @@ class AddApartmentPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Apartment Name', style: TextStyle(fontSize: 16)),
+                    child: Text('Apartment Name'.tr, style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),
             const SizedBox(height: 2),
-              _field('Apartment Name', (v) => controller.title.value = v),
+              _field('Apartment Name'.tr, (v) => controller.title.value = v),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Apartment Location', style: TextStyle(fontSize: 16)),
+                    child: Text('Apartment Location'.tr, style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),
             const SizedBox(height: 2),
-             _field('Governorate', (v) => controller.governorate.value = v),
-              _field('City', (v) => controller.city.value = v),
+             _field('Governorate'.tr, (v) => controller.governorate.value = v),
+              _field('City'.tr, (v) => controller.city.value = v),
                             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                  children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Description', style: TextStyle(fontSize: 16)),
+                    child: Text('Description'.tr, style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),
               const SizedBox(height: 2),
-              _field( 'Description',(v) => controller.description.value = v,),
+              _field( 'Description'.tr,(v) => controller.description.value = v,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Price per day', style: TextStyle(fontSize: 16)),
+                    child: Text('Price Per Day'.tr, style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),
             const SizedBox(height: 2),
-            _field('Price per night',(v) => controller.pricePerNight.value = v, isNumber: true,),
+            _field('Price Per Day'.tr,(v) => controller.pricePerNight.value = v, isNumber: true,),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Rooms', style: TextStyle(fontSize: 16)),
+                    child: Text('Rooms'.tr, style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),
@@ -132,7 +132,7 @@ class AddApartmentPage extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: Text('Free Wi-Fi', style: TextStyle(fontSize: 14)),
+                      child: Text('Free Wi-Fi'.tr, style: TextStyle(fontSize: 14)),
                     ),
                   ],
                 ),
@@ -160,7 +160,7 @@ class AddApartmentPage extends StatelessWidget {
                   ),
                   child: controller.isLoading.value
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Add',textAlign: TextAlign.center,
+                      :  Text('Add'.tr,textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -204,7 +204,7 @@ class AddApartmentPage extends StatelessWidget {
               backgroundColor:
                   c.hasWifi.value == yes ? Colors.grey[600] : Colors.grey[300],
             ),
-            child: Text(yes ? 'Yes' : 'No',
+            child: Text(yes ? 'Yes'.tr : 'No'.tr,
                 style: TextStyle(
                   color: c.hasWifi.value == yes ? Colors.white : Colors.black,
                 )),
