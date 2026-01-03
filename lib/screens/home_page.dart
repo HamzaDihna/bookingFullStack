@@ -11,6 +11,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(250, 0, 145, 199),
+         backgroundColor: theme.appBarTheme.backgroundColor,
         title: const Text(
           'Home',
           style: TextStyle(

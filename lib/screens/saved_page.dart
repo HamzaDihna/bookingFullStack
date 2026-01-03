@@ -25,7 +25,7 @@ class _SavedPageState extends State<SavedPage> {
 
   @override
   Widget build(BuildContext context) {
-  
+      final theme = Theme.of(context);
     final BookingController controller =
         Get.find<BookingController>();
 
@@ -36,7 +36,7 @@ class _SavedPageState extends State<SavedPage> {
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor: const Color.fromARGB(255, 0, 145, 199),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         title: const Text(
           'The Reserved',
           style: TextStyle(

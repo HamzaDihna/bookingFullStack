@@ -9,6 +9,7 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final theme = Theme.of(context);
     final controller = Get.find<FavoriteController>();
     final navController = Get.find<NavigationController>();
     return Obx(() {
@@ -20,7 +21,7 @@ final isOwner = navController.isOwnerMode.value;
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) :  const Color.fromARGB(255, 0, 145, 199),
+        backgroundColor:isOwner ? Color.fromARGB(255, 95, 95, 95) : theme.appBarTheme.backgroundColor,
         title: const Text(
           'Favorites',
           style: TextStyle(

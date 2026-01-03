@@ -20,7 +20,8 @@ class BookedApartmentCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+       color: Theme.of(context).cardColor,
+ 
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 6),
@@ -58,8 +59,8 @@ class BookedApartmentCard extends StatelessWidget {
 
                 Text(
                   apartment.location,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
                     fontSize: 13,
                   ),
                 ),

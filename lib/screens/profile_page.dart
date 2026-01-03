@@ -16,6 +16,7 @@ final AuthController authController = Get.find<AuthController>();
 final navController = Get.find<NavigationController>();
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Obx(() {
     final isOwner = navController.isOwnerMode.value;
     return Scaffold(
@@ -25,7 +26,7 @@ final navController = Get.find<NavigationController>();
             bottom: Radius.circular(25),
           ),
         ),
-        backgroundColor:  isOwner ? Color.fromARGB(255, 95, 95, 95) : Colors.blue,
+       backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: isOwner ? 0 : 4,
         title: const Text(
           'Profile',
@@ -69,10 +70,7 @@ body: Obx(() => Padding(
       /// 👤 Name
       Text(
         userController.fullName,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+       style: theme.textTheme.titleMedium,
       ),
 
       const SizedBox(height: 4),

@@ -11,6 +11,7 @@ final bool enableNavigation;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final HomeController controller = Get.find<HomeController>();
   final favController = Get.find<FavoriteController>();
 
@@ -111,16 +112,16 @@ final bool enableNavigation;
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_on,
                         size: 16,
-                        color: Color.fromARGB(255, 95, 95, 95),
+                        color: theme.textTheme.bodyMedium!.color,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         apartment.location,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 95, 95, 95),
+                        style:  TextStyle(
+                          color: theme.textTheme.bodyMedium!.color,
                         ),
                       ),
                     ],
@@ -159,16 +160,17 @@ final bool enableNavigation;
                             children: [
                               Text(
                                 apartment.price.toStringAsFixed(0),
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 95, 95, 95),
+                                style: TextStyle(
+                                  color: theme.textTheme.bodyMedium!.color,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 34,
                                   height: 1,
                                 ),
                               ),
-                              const Icon(
+                               Icon(
                                 Icons.attach_money,
-                                color: Color.fromARGB(255, 95, 95, 95),
+                                color:theme.textTheme.bodyMedium!.color
+,
                                 size: 28,
                               ),
                             ],

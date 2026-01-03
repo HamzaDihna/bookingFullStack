@@ -13,6 +13,8 @@ final bool enableNavigation;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+final colors = theme.colorScheme;
     final HomeController controller = Get.find<HomeController>();
   final favController = Get.find<FavoriteController>();
 
@@ -30,7 +32,7 @@ final bool enableNavigation;
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
+              color: theme.cardColor,
               borderRadius: BorderRadius.circular(20),
               boxShadow: const [
                 BoxShadow(
@@ -108,10 +110,8 @@ final bool enableNavigation;
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
                   child: Text(
                     apartment.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: theme.textTheme.titleLarge,
+
                   ),
                 ),
 
@@ -184,12 +184,11 @@ final bool enableNavigation;
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 17),
-                            child: const Text(
+                            child: Text(
                               'per day',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
+                              style: theme.textTheme.bodySmall?.copyWith(
+    fontSize: 14,
+  ),
                             ),
                           ),
                         ],
@@ -219,7 +218,7 @@ final bool enableNavigation;
                         Icon(
                           Icons.wifi,
                           size: 16,
-                          color:  isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : Colors.blue,
+                          color:  isOwnerView ? const Color.fromARGB(255, 95, 95, 95) : theme.primaryColor,
                         ),
                         const SizedBox(width: 4),
                         const Text('WiFi'),

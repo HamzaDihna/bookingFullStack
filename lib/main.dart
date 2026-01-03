@@ -53,8 +53,44 @@ class bookingresidentialapartments extends StatelessWidget {
     return Obx(() => GetMaterialApp(
       initialBinding: AppBinding(),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+   theme: ThemeData(
+  brightness: Brightness.light,
+  primaryColor: const Color(0xFF0091C7),
+  scaffoldBackgroundColor: const Color(0xFFF5F7FA),
+  cardColor: Colors.white,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color(0xFF0091C7),
+    foregroundColor: Colors.white,
+    elevation: 0,
+  ),
+  textTheme: const TextTheme(
+    bodyMedium: TextStyle(color: Colors.black87),
+    titleLarge: TextStyle(
+      color: Colors.black87,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
+
+darkTheme: ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: const Color(0xFF0091C7),
+  scaffoldBackgroundColor: const Color(0xFF121212),
+  cardColor: const Color(0xFF1E1E1E),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color(0xFF1E1E1E),
+    foregroundColor: Colors.white,
+    elevation: 0,
+  ),
+  textTheme: const TextTheme(
+    bodyMedium: TextStyle(color: Colors.white),
+    titleLarge: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
+
       themeMode:
           themeController.isDark.value ? ThemeMode.dark : ThemeMode.light,
       initialRoute: '/',
