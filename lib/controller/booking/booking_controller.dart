@@ -6,6 +6,7 @@ import '../../models/booking_model.dart';
 class BookingController extends GetxController {
   final bookings = <BookingModel>[].obs;
 var isLoading = false.obs;
+
   /// 🔹 التاب المختار
   final selectedStatus = BookingStatus.all.obs;
 

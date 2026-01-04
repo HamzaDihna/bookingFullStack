@@ -1,6 +1,7 @@
 import 'package:bookingresidentialapartments/controller/home/home_controller.dart';
 import 'package:bookingresidentialapartments/widget/apartment_card.dart';
 import 'package:bookingresidentialapartments/widget/filter_bar.dart';
+import 'package:bookingresidentialapartments/widget/notification_bell.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,7 @@ class HomePage extends StatelessWidget {
             bottom: Radius.circular(25),
           ),
         ),
+     //  leading:  NotificationBell(),
          backgroundColor: theme.appBarTheme.backgroundColor,
         title:  Text(
           'Home'.tr,
@@ -29,6 +31,7 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
+         
          IconButton(
   icon: const Icon(Icons.search, color: Colors.white),
   onPressed: () async {

@@ -12,6 +12,7 @@ static const String _baseUrl = 'https://nonevil-emmalynn-inoperative.ngrok-free.
   ));
 static void setToken(String token) {
   _dio.options.headers['Authorization'] = 'Bearer $token';
+   print("Token : $token");
 }
   // LOGIN
   static Future<Map<String, dynamic>> login({
@@ -19,7 +20,7 @@ static void setToken(String token) {
     required String password,
     
   }) async {
-    
+   
     try {
       final response = await _dio.post('login', data: {
         'phone': phone,
@@ -229,4 +230,32 @@ static Future<Map<String, dynamic>> addApartment({
     throw e.response?.data['message'] ?? 'Failed to add apartment';
   }
 }
+// ✅ GET
+static Future<dynamic> get(String endpoint,
+    {Map<String, dynamic>? query}) async {
+  try {
+    final response = await _dio.get(
+      endpoint,
+      queryParameters: query,
+    );
+    return response.data;
+  } on DioException catch (e) {
+    throw e.response?.data['message'] ?? 'GET request failed';
+  }
+}
+
+// ✅ POST
+static Future<dynamic> post(String endpoint,
+    {Map<String, dynamic>? data}) async {
+  try {
+    final response = await _dio.post(
+      endpoint,
+      data: data,
+    );
+    return response.data;
+  } on DioException catch (e) {
+    throw e.response?.data['message'] ?? 'POST request failed';
+  }
+}
+
   }

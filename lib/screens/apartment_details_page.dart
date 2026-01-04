@@ -285,7 +285,7 @@ if (apartment == null) {
       Expanded(
         child: OutlinedButton.icon(
           icon: const Icon(Icons.edit),
-          label:  Text('Edit'.tr),
+          label:  Text('Edit'.tr,style: TextStyle(color: Colors.white),),
           onPressed: () {
             Get.toNamed(
               '/editApartment',

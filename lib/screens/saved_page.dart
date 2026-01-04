@@ -60,27 +60,32 @@ class _SavedPageState extends State<SavedPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Obx(() {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: BookingStatus.values.map((status) {
-                  final isSelected =
-                      controller.selectedStatus.value == status;
-
-                  return ChoiceChip(
-                    label: Text(status.name.capitalizeFirst!.tr),
-                    selected: isSelected,
-                    onSelected: (_) =>
-                        controller.changeStatus(status),
-                    selectedColor: Colors.blue,
-                    labelStyle: TextStyle(
-                      color:
-                          isSelected ? Colors.white : Colors.black,
-                    ),
+              return SingleChildScrollView(
+                
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  spacing: 5,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: BookingStatus.values.map((status) {
+                    final isSelected =
+                        controller.selectedStatus.value == status;
+                
+                    return ChoiceChip(
+                      label: Text(status.name.capitalizeFirst!.tr),
+                      selected: isSelected,
+                      onSelected: (_) =>
+                          controller.changeStatus(status),
+                      selectedColor: Colors.blue,
+                      labelStyle: TextStyle(
+                        color:
+                            isSelected ? Colors.white : Colors.black,
+                      ),
+                      
+                    );
                     
-                  );
-                  
-                }).toList(),
-               
+                  }).toList(),
+                 
+                ),
               );
               
             }),

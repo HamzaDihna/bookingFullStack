@@ -45,7 +45,19 @@ class AppTranslations extends Translations {
           'previous': 'Previous',
           'canceled': 'Canceled',
           'Edit' : 'Edit',
-          'Cancel' : 'Cancel'
+          'Cancel' : 'Cancel',
+          'Profile Edit' : 'Profile Edit',
+          'Your Name' : 'Your Name',
+          'Phone Number' : 'Phone Number',
+          'Birthday' : 'Birthday',
+          'Personal Image            ' :'Personal Image            ',
+          '       Identity Image' : '       Identity Image',
+          'Password' : 'Password',
+          'Hide password' : 'Hide password',
+          'Welcome!' : 'Welcome!',
+          'Discover, Choose, Book' : 'Discover, Choose, Book',
+          'All In One Place' : 'All In One Place',
+          'Get started' : 'Get started'
         },
         'ar': {
           'Profile': 'الملف الشخصي',
@@ -89,7 +101,19 @@ class AppTranslations extends Translations {
           'previous': 'السابقة',
           'canceled': 'الملغاة',
           'Edit' :'تعديل',
-          'Cancel' :'الغاء'
+          'Cancel' :'الغاء',
+          'Profile Edit' : 'تعديل الملف الشخصي',
+          'Your Name' : 'اسمك',
+          'Phone Number' : 'رقم الجوال',
+          'Birthday': 'عيد ميلادك',
+          'Personal Image            ' : 'صورة شخصية                        ',
+          '       Identity Image' : 'صورة الهوية       ',
+          'Hide password' : 'اخفاء كلمة السر',
+          'Password': 'كلمة السر',
+          'Welcome!' : 'اهلا بك',
+          'Discover, Choose, Book' : 'استكشف و اختر و احجز',
+          'All In One Place' : 'كل شي في مكان واحد',
+          'Get started' : 'ابدأ الان رحلتك'
           },
       };
 }

@@ -81,7 +81,7 @@ final navController = Get.find<NavigationController>();
             const SizedBox(height: 24),
 
             // 🔹 Free Wifi
-            _buildSectionTitle('Free Wi-fi'.tr),
+            _buildSectionTitle('Free Wi-Fi'.tr),
             const SizedBox(height: 8),
             _buildWifiOptions(),
             const SizedBox(height: 40),

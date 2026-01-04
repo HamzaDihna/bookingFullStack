@@ -2,7 +2,7 @@ import 'package:bookingresidentialapartments/models/rating_model.dart';
 
 import '../models/apartment_model.dart';
 
-enum BookingStatus { all, current, previous, canceled,}
+enum BookingStatus { all, pending, current, previous, canceled,}
 
 class BookingModel {
   final String id;
@@ -48,6 +48,9 @@ static BookingStatus _calculateStatus(
   DateTime end,
   BookingStatus backendStatus,
 ) {
+  if (backendStatus == BookingStatus.pending) {
+    return BookingStatus.pending;
+  }
   if (backendStatus == BookingStatus.canceled) {
     return BookingStatus.canceled;
   }
@@ -67,8 +70,11 @@ static BookingStatus _calculateStatus(
   // دالة مساعدة لتحويل نصوص Laravel إلى Enum تطبيقك
   static BookingStatus _mapStatus(String status) {
     switch (status) {
-      case 'approved': return BookingStatus.current;
-      case 'pending': return BookingStatus.current;
+
+      case 'approved': 
+      return BookingStatus.current;
+      case 'pending': 
+      return BookingStatus.pending;
       case 'cancelled':
       case 'rejected': return BookingStatus.canceled;
       default: return BookingStatus.previous;

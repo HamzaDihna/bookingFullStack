@@ -44,7 +44,7 @@ class GetStarted extends StatelessWidget {
           const SizedBox(height: 20),
 
            Text(
-            'Welcome!',
+            'Welcome!'.tr,
             style: TextStyle(
               fontSize: 55,
               fontStyle: FontStyle.italic,
@@ -55,13 +55,13 @@ class GetStarted extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          const Text(
-            'Discover, Choose, Book',
+           Text(
+            'Discover, Choose, Book'.tr,
             style: TextStyle(fontSize: 20),
           ),
 
-          const Text(
-            'All In One Place',
+           Text(
+            'All In One Place'.tr,
             style: TextStyle(fontSize: 20),
           ),
 
@@ -72,11 +72,14 @@ class GetStarted extends StatelessWidget {
               backgroundColor: Colors.lightBlue,
               foregroundColor: Colors.white,
               minimumSize: const Size(280, 50),
+              shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
             ),
             onPressed: () {
               Get.toNamed('/login');
             },
-            child: const Text('Get started', style: TextStyle(fontSize: 18)),
+            child:  Text('Get started'.tr, style: TextStyle(fontSize: 18)),
           ),
         ],
       ),

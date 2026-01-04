@@ -16,6 +16,7 @@ import 'package:bookingresidentialapartments/screens/edit_booking_page.dart';
 import 'package:bookingresidentialapartments/screens/edit_profile_page.dart';
 import 'package:bookingresidentialapartments/screens/getStarted_screen.dart';
 import 'package:bookingresidentialapartments/screens/my_apartments_page.dart';
+import 'package:bookingresidentialapartments/screens/notifications_page.dart';
 import 'package:bookingresidentialapartments/screens/profile_page.dart';
 import 'package:bookingresidentialapartments/screens/search_page.dart';
 import 'package:bookingresidentialapartments/screens/select_date_page.dart';
@@ -129,6 +130,11 @@ translations: AppTranslations(),
    GetPage(name: '/editBooking',page: () =>  EditBookingPage(),),
   GetPage(name: '/myApartments', page: () =>  MyApartmentsPage()),
   GetPage(name: '/addApartment', page: () =>  AddApartmentPage()),
+  GetPage(
+  name: '/notifications',
+  page: () => NotificationsPage(),
+),
+
   ],
     ));
   }

@@ -42,7 +42,7 @@ final navController = Get.find<NavigationController>();
             children: [
 
               /// 👤 Name
-              const Text('Your Name'),
+               Text('Your Name'.tr),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -63,7 +63,7 @@ final navController = Get.find<NavigationController>();
               ),
 
               const SizedBox(height: 16),
-              const Text('Phone Number'),
+               Text('Phone Number'.tr),
               const SizedBox(height: 8),
               _input(
                 'Phone',
@@ -72,7 +72,7 @@ final navController = Get.find<NavigationController>();
               ),
 
               const SizedBox(height: 16),
-              const Text('Birthday'),
+               Text('Birthday'.tr),
               const SizedBox(height: 8),
               Obx(() => Row(
                     children: [
@@ -89,7 +89,13 @@ final navController = Get.find<NavigationController>();
                   )),
 
               const SizedBox(height: 16),
-              const Text('Personal Image          Identity Image'),
+               Row(
+                 children: [
+                   Text('Personal Image            '.tr),
+                   Text('       Identity Image'.tr),
+                 ],
+               ),
+                
               const SizedBox(height: 8),
 
               Row(
@@ -121,7 +127,7 @@ final navController = Get.find<NavigationController>();
               ),
 
               const SizedBox(height: 16),
-              const Text('Password'),
+               Text('Password'.tr),
               const SizedBox(height: 8),
 
               Obx(() => _input(
@@ -156,8 +162,8 @@ final navController = Get.find<NavigationController>();
                   onPressed: controller.togglePassword,
                   child: Obx(() => Text(
                         controller.showPassword.value
-                            ? 'Hide password'
-                            : 'Show password',
+                            ? 'Hide password'.tr
+                            : 'Show password'.tr,
                         style: TextStyle(
                             color:isOwner ? const Color.fromARGB(255, 95, 95, 95) : const Color.fromARGB(255, 0, 145, 199),),
                       )),
@@ -177,7 +183,7 @@ final navController = Get.find<NavigationController>();
                       ),
                     ),
                   onPressed: () => controller.saveProfile(),
-                  child: const Text('Edit Profile',
+                  child:  Text('Edit Profile'.tr,
                       style:
                           TextStyle(fontSize: 18, color: Colors.white)),
                 ),
