@@ -27,4 +27,5 @@ class OwnerApartmentsController extends GetxController {
   void deleteApartment(int id) {
     apartments.removeWhere((a) => a.id == id);
   }
+  
 }

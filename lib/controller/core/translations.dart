@@ -57,7 +57,8 @@ class AppTranslations extends Translations {
           'Welcome!' : 'Welcome!',
           'Discover, Choose, Book' : 'Discover, Choose, Book',
           'All In One Place' : 'All In One Place',
-          'Get started' : 'Get started'
+          'Get started' : 'Get started',
+          'Order Booking' : 'Order Booking'
         },
         'ar': {
           'Profile': 'الملف الشخصي',
@@ -113,7 +114,8 @@ class AppTranslations extends Translations {
           'Welcome!' : 'اهلا بك',
           'Discover, Choose, Book' : 'استكشف و اختر و احجز',
           'All In One Place' : 'كل شي في مكان واحد',
-          'Get started' : 'ابدأ الان رحلتك'
+          'Get started' : 'ابدأ الان رحلتك',
+          'Order Booking' : 'طلبات الحجز'
           },
       };
 }

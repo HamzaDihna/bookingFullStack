@@ -28,16 +28,12 @@ class BookedApartmentCard extends StatelessWidget {
         ],
       ),
       child: Row(
+         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// 🖼 Image
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(
-              apartment.image,
-              width: 90,
-              height: 90,
-              fit: BoxFit.cover,
-            ),
+            child: _apartmentImage(apartment.image),
           ),
 
           const SizedBox(width: 12),
@@ -49,6 +45,8 @@ class BookedApartmentCard extends StatelessWidget {
               children: [
                 Text(
                   apartment.title,
+                    maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -59,6 +57,8 @@ class BookedApartmentCard extends StatelessWidget {
 
                 Text(
                   apartment.location,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 13,
@@ -85,6 +85,31 @@ class BookedApartmentCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+  Widget _apartmentImage(String? image) {
+    if (image == null || image.isEmpty || !image.startsWith('http')) {
+      return Image.asset(
+        'assets/images/Group.png',
+        width: 90,
+        height: 90,
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      image,
+      width: 90,
+      height: 90,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) {
+        return Image.asset(
+          'assets/images/Group.png',
+          width: 90,
+          height: 90,
+          fit: BoxFit.cover,
+        );
+      },
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:bookingresidentialapartments/controller/auth/auth_controller.dart';
 import 'package:bookingresidentialapartments/controller/core/theme_controller.dart';
 import 'package:bookingresidentialapartments/controller/user_controller.dart';
+import 'package:bookingresidentialapartments/screens/OwnerBookingsPage.dart';
 import 'package:bookingresidentialapartments/screens/add_apartment_page.dart';
 import 'package:bookingresidentialapartments/screens/chat_page.dart';
 import 'package:bookingresidentialapartments/screens/favorite_page.dart';
@@ -31,7 +32,7 @@ final NavigationController navController = Get.find<NavigationController>();
               MyApartmentsPage(),   // 🏠 واجهة المؤجر
               FavoritePage(),
               AddApartmentPage(),   // ➕ إضافة شقة
-              ChatPage(),
+              OwnerBookingsPage(),
               ProfilePage(),
             ]
           : [
@@ -92,7 +93,7 @@ final NavigationController navController = Get.find<NavigationController>();
               _navItem(Icons.home, 0),        // Home (Owner)
               _navItem(Icons.favorite_border, 1),
               _navItem(Icons.add, 2),         // ➕
-              _navItem(Icons.chat, 3),
+              _navItem(Icons.event_available, 3),
               _navItem(Icons.person, 4),
             ]
           : [
@@ -159,7 +160,7 @@ final NavigationController navController = Get.find<NavigationController>();
               _ownerNavIcon(Icons.home, 0),
               _ownerNavIcon(Icons.favorite_border, 1),
               const SizedBox(width: 48), // مكان زر +
-              _ownerNavIcon(Icons.chat, 3),
+              _ownerNavIcon(Icons.event_available, 3),
               _ownerNavIcon(Icons.person, 4),
             ],
           ),

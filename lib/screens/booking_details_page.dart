@@ -43,12 +43,20 @@ return Obx((){
       body: Stack(
         children: [
           /// 🔹 Image
-          Image.asset(
-            apartment.image,
-            height: 360,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
+            AspectRatio(
+  aspectRatio: 16 / 9, // أو 4 / 3
+  child: Image.network(
+    apartment.image,
+    width: double.infinity,
+    fit: BoxFit.contain, // 👈 لا قصّ
+    errorBuilder: (_, __, ___) {
+      return Image.asset(
+        'assets/images/Group.png',
+        fit: BoxFit.contain,
+      );
+    },
+  ),
+),
 
           /// 🔹 Bottom Sheet
           DraggableScrollableSheet(

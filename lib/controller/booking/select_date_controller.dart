@@ -1,3 +1,4 @@
+import 'package:bookingresidentialapartments/services/api_service.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -6,6 +7,11 @@ class SelectDateController extends GetxController {
   DateTime focusedDay = DateTime.now();
   DateTime? startDate;
   DateTime? endDate;
+@override
+void onInit() {
+  loadBlockedDates(Get.arguments.id);
+  super.onInit();
+}
 
   /// حجوزات مؤكدة (لاحقاً من الباك)
   final List<DateTimeRange> bookedRanges = [
@@ -18,6 +24,22 @@ class SelectDateController extends GetxController {
       end: DateTime(2025, 12, 22),
     ),
   ];
+Future<void> loadBlockedDates(String apartmentId) async {
+  final res = await ApiService.get('apartments/$apartmentId/blocked-dates');
+      final List list = res['data'];
+  bookedRanges.clear();
+
+  for (final b in list) {
+    bookedRanges.add(
+      DateTimeRange(
+        start: DateTime.parse(b['start_date']),
+        end: DateTime.parse(b['end_date']),
+      ),
+    );
+  }
+
+  update();
+}
 
   bool isPast(DateTime day) {
     final today = DateTime.now();
@@ -25,12 +47,25 @@ class SelectDateController extends GetxController {
   }
 
   bool isBooked(DateTime day) {
-    return bookedRanges.any(
-      (range) =>
-          !day.isBefore(range.start) &&
-          !day.isAfter(range.end),
+  final normalizedDay = DateTime(day.year, day.month, day.day);
+
+  return bookedRanges.any((range) {
+    final start = DateTime(
+      range.start.year,
+      range.start.month,
+      range.start.day,
     );
-  }
+    final end = DateTime(
+      range.end.year,
+      range.end.month,
+      range.end.day,
+    );
+
+    return !normalizedDay.isBefore(start) &&
+           !normalizedDay.isAfter(end);
+  });
+}
+
 
   bool isInSelectedRange(DateTime day) {
     if (startDate == null) return false;
