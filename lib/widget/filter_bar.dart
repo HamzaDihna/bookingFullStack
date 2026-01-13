@@ -26,7 +26,7 @@ class FilterBar extends StatelessWidget {
         padding: const EdgeInsets.only(right: 8),
         child: Chip(
           
-          backgroundColor: Color(0xDEDFE0E2),
+          backgroundColor: Colors.white,
           label: Text(
             '\$${controller.activeFilters['minPrice']} - \$${controller.activeFilters['maxPrice']}',style: TextStyle(fontStyle: FontStyle.italic),
           ),
@@ -50,7 +50,7 @@ class FilterBar extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(right: 8),
         child: Chip(
-          backgroundColor: Color(0x0DEDFE0E2),
+          backgroundColor:Colors.white,
           label: Text(
             entry.key == 'wifi'
                 ? 'Wifi'
