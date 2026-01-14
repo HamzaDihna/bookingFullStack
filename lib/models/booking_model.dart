@@ -20,6 +20,7 @@ class BookingModel {
     this.status = BookingStatus.current,
     this.totalPrice,
     this.rating,
+
   });
   factory BookingModel.fromJson(Map<String, dynamic> json) {
      final start = DateTime.parse(json['start_date']);
@@ -37,11 +38,14 @@ class BookingModel {
     apartment: ApartmentModel.fromJson(json['apartment']),
     startDate: start,
     endDate: end,
+    
     totalPrice: double.tryParse(json['total_price'].toString()),
     status: finalStatus,
       // إذا كان هناك تقييم مرتبط بالحجز في Laravel
       rating: json['rating'] != null ? RatingModel.fromJson(json['rating']) : null,
+    
     );
+    
   }
 static BookingStatus _calculateStatus(
   DateTime start,

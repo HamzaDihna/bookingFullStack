@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../models/booking_model.dart';
 import '../controller/booking/booking_controller.dart';
 import '../controller/booking/edit_date_controller.dart';
@@ -15,14 +14,13 @@ class EditBookingPage extends StatelessWidget {
     final bookingController = Get.find<BookingController>();
 
     final controller = Get.put(
-      EditDateController(
-        originalStart: booking.startDate,
-        originalEnd: booking.endDate,
-        bookedDates: bookingController.getBookedDates(
-          excludeBookingId: booking.id,
-        ),
-      ),
-    );
+  EditDateController(
+    originalStart: booking.startDate,
+    originalEnd: booking.endDate,
+    apartmentId: booking.apartment.id,
+    bookingId: booking.id,
+  ),
+);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,6 +41,7 @@ class EditBookingPage extends StatelessWidget {
         child: GetBuilder<EditDateController>(
           builder: (_) {
             return Column(
+              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// 📅 Calendar (نفس SelectDatePage)
@@ -52,46 +51,43 @@ class EditBookingPage extends StatelessWidget {
                     color: Colors.blue.shade50,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: TableCalendar(
-                    firstDay: DateTime.now(),
-                    lastDay: DateTime(2030),
-                    focusedDay: controller.focusedDay,
-                
-                    enabledDayPredicate: (day) {
-                      return !controller.isPast(day) &&
-                          !controller.isBooked(day);
-                    },
+                  child:TableCalendar(
+  firstDay: DateTime.now(),
+  lastDay: DateTime(2030),
+  focusedDay: controller.focusedDay,
 
-                    onDaySelected: (day, focusedDay) {
-                      controller.focusedDay = focusedDay;
-                      controller.onDaySelected(day);
-                    },
+  enabledDayPredicate: (day) {
+    return !controller.isPast(day) &&
+           !controller.isBooked(day);
+  },
 
-                    calendarBuilders: CalendarBuilders(
-                      defaultBuilder: (context, day, _) {
-                        if (controller.isBooked(day)) {
-                          return _dayBox(day, Colors.red);
-                        }
-                        
-                        if (controller.isOriginal(day)) {
-                          return _dayBox(day, Colors.black);
-                        }
-                        if (controller.isNew(day)) {
-                          return _dayBox(day, Colors.blue);
-                        }
-                        return null;
-                      },
-                    ),
+  onDaySelected: (day, focusedDay) {
+    controller.focusedDay = focusedDay;
+    controller.onDaySelected(day);
+  },
 
-                    calendarStyle: CalendarStyle(
-                      todayDecoration: BoxDecoration(
-                        color: Colors.blue.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      disabledTextStyle:
-                          const TextStyle(color: Colors.grey),
-                    ),
-                  ),
+  calendarBuilders: CalendarBuilders(
+    /// 🔴 الأيام المحجوزة (disabled)
+    disabledBuilder: (context, day, _) {
+      if (controller.isBooked(day)) {
+        return _dayBox(day, Colors.red);
+      }
+      return null;
+    },
+
+    /// 🟦 الأيام الجديدة المختارة
+    defaultBuilder: (context, day, _) {
+      if (controller.isNew(day)) {
+        return _dayBox(day, Colors.blue);
+      }
+      if (controller.isOriginal(day)) {
+        return _dayBox(day, Colors.black);
+      }
+      return null;
+    },
+  ),
+),
+
                 ),
 
                 const SizedBox(height: 20),
@@ -221,22 +217,21 @@ class EditBookingPage extends StatelessWidget {
 }
 Widget _dayBox(DateTime day, Color color) {
   return Container(
-    margin: const EdgeInsets.all(4),
+    margin: const EdgeInsets.all(6),
     alignment: Alignment.center,
     decoration: BoxDecoration(
-      color: color.withOpacity(0.25),
-      borderRadius: BorderRadius.circular(8),
+      color: color,
+      borderRadius: BorderRadius.circular(20),
     ),
     child: Text(
       '${day.day}',
       style: TextStyle(
-        color: color,
+        color: Colors.white,
         fontWeight: FontWeight.bold,
       ),
     ),
   );
 }
-
 Widget _dateInfo(String title, DateTime date) {
   return Column(
     children: [

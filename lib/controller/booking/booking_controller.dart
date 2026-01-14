@@ -1,5 +1,6 @@
 import 'package:bookingresidentialapartments/models/rating_model.dart';
 import 'package:bookingresidentialapartments/services/api_service.dart.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../models/booking_model.dart';
 
@@ -72,6 +73,31 @@ void changeStatus(BookingStatus status) {
     isLoading.value = false;
   }
 }
+List<DateTimeRange> getBookedRanges({String? excludeBookingId}) {
+  final ranges = <DateTimeRange>[];
+
+  for (final booking in bookings) {
+    if (booking.id == excludeBookingId) continue;
+    if (booking.status == BookingStatus.canceled) continue;
+
+    ranges.add(
+      DateTimeRange(
+        start: DateTime(
+          booking.startDate.year,
+          booking.startDate.month,
+          booking.startDate.day,
+        ),
+        end: DateTime(
+          booking.endDate.year,
+          booking.endDate.month,
+          booking.endDate.day,
+        ),
+      ),
+    );
+  }
+
+  return ranges;
+}
 
 Future<void> editBookingDates({
   required String bookingId,
@@ -118,6 +144,7 @@ List<DateTime> getBookedDates({String? excludeBookingId}) {
 
   return dates;
 }
+
 void updateBookingStatuses() {
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
