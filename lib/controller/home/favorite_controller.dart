@@ -19,7 +19,7 @@ class FavoriteController extends GetxController {
               final apartmentJson = item['apartment'];
               return ApartmentModel.fromJson(apartmentJson);
             })
-            .toList(),
+            .toList(),  
       );
     } catch (e) {
       print('❌ Load favorites error: $e');

@@ -165,24 +165,31 @@ void updateBookingStatuses() {
   bookings.refresh();
 }
 
-void addRating(
+Future<void> addRating(
   String bookingId,
   double stars,
   String? comment,
-) {
+) async {
   final booking =
       bookings.firstWhere((b) => b.id == bookingId);
 
+  // 🔒 منع التقييم إذا:
   if (booking.status != BookingStatus.previous) return;
   if (booking.rating != null) return;
 
-  booking.rating = RatingModel(
-    stars: stars,
-    comment: comment,
-    createdAt: DateTime.now(),
-  );
+  try {
+    final rating = await ApiService.addRating(
+      bookingId: bookingId,
+      stars: stars,
+      comment: comment,
+    );
 
-  bookings.refresh();
+    // ✅ نخزنه محليًا بعد نجاح السيرفر
+    booking.rating = rating;
+    bookings.refresh();
+  } catch (e) {
+    print('❌ Add rating error: $e');
+  }
 }
 Future<void> fetchMyBookings() async {
     try {

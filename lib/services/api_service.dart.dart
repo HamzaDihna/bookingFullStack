@@ -1,3 +1,4 @@
+import 'package:bookingresidentialapartments/models/rating_model.dart';
 import 'package:dio/dio.dart';
 import 'dart:io';
 
@@ -166,8 +167,17 @@ static Future<bool> createBooking({
 
 // 📥 get favorites
 static Future<List<dynamic>> getFavorites() async {
+  try{
   final response = await _dio.get('favorites');
+  if (response.data['data'] == null) {
+      throw "Favorites data is missing!";
+    }
+  
   return response.data['data'];
+  } on DioException catch (e) {
+    print("❌ Get Favorites Error: ${e.response?.data}");
+    throw e.response?.data['message'] ?? 'Failed to load favorites';
+  }
 }
 static Future<Map<String, dynamic>> updateProfile({
   required String name,
@@ -182,8 +192,11 @@ static Future<Map<String, dynamic>> updateProfile({
     'name': name,
     'phone': phone,
     if (oldPassword != null) 'old_password': oldPassword,
-    if (newPassword != null) 'new_password': newPassword,
-    if (newPassword != null) 'new_password_confirmation': newPassword,
+   if (newPassword != null) ...{
+  'new_password': newPassword,
+  'new_password_confirmation': newPassword,
+},
+
     if (birthDate != null) 'birth_date': birthDate,
     if (profileImage != null)
       'profile_image': await MultipartFile.fromFile(profileImage.path),
@@ -191,9 +204,31 @@ static Future<Map<String, dynamic>> updateProfile({
       'id_image': await MultipartFile.fromFile(idImage.path),
   });
 
-  final response = await _dio.post('profile/update', data: formData);
+  final response = await _dio.post(
+    'profile/update',
+    data: formData,
+  );
+
+  // 🔥 مهم: نرجّع بيانات المستخدم
   return response.data;
 }
+static Future<RatingModel> addRating({
+  required String bookingId,
+  required double stars,
+  String? comment,
+}) async {
+  final response = await _dio.post(
+    'ratings',
+    data: {
+      'booking_id': bookingId,
+      'rating': stars.toInt(),
+      'comment': comment,
+    },
+  );
+
+  return RatingModel.fromJson(response.data);
+}
+
 static Future<Map<String, dynamic>> addApartment({
   required String title,
   required String governorate,
